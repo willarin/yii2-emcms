@@ -16,9 +16,10 @@
 			"role": "Developer"
 		}
 	],
-	"minimum-stability": "beta",
+	"minimum-stability": "dev",
 	"require": {
-		"php": ">=5.5.0"
+		"php": ">=5.5.0",
+		"yiisoft/yii2": "*"
 	},
 	"autoload": {
 		"psr-4": {
