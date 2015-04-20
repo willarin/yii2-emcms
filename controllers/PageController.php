@@ -5,11 +5,9 @@ namespace almeyda\emcms\controllers;
 use Yii;
 use yii\web\Controller;
 
+class PageController extends Controller {
 
-class PageController extends Controller
-{
-	
-	public function actions()
+    public function actions() 
     {
         return [
             'page' => [
@@ -18,5 +16,4 @@ class PageController extends Controller
         ];
     }
 
-	
 }
