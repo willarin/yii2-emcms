@@ -11,7 +11,7 @@ class PageController extends Controller {
     {
         return [
             'page' => [
-                'class' => 'yii\web\ViewAction',
+                'class' => 'almeyda\emcms\web\ViewAction',
             ],
         ];
     }
