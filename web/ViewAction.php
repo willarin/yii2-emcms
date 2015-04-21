@@ -13,9 +13,13 @@ class ViewAction extends Action
         try {
             $output = parent::run();
         } catch (NotFoundHttpException $e) {
-            throw new NotFoundHttpException(
-                Yii::t('yii', 'Page not found.')
-            );
+            if (YII_DEBUG) {
+                throw new NotFoundHttpException($e->getMessage());
+            } else {
+                throw new NotFoundHttpException(
+                    Yii::t('yii', 'Page not found.')
+                );
+            }
         }
 
         return $output;
