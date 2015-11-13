@@ -8,6 +8,11 @@ use yii\web\NotFoundHttpException;
 
 class ViewAction extends Action
 {
+    /**
+     * @var string the name of the GET parameter that contains the requested theme name.
+     */
+    public $themeParam = 'theme';
+    
     public function run()
     {
         try {
@@ -23,6 +28,22 @@ class ViewAction extends Action
         }
 
         return $output;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    protected function resolveViewName()
+    {
+        $viewNameResolved = parent::resolveViewName();
+        $viewName = Yii::$app->request->get($this->viewParam, $this->defaultView);
+        
+        if (Yii::$app->request->get($this->themeParam)) {
+            $viewNameResolved = str_replace($viewName, Yii::$app->request->get($this->themeParam) . '/' . $viewName, $viewNameResolved);
+        }
+
+
+        return $viewNameResolved;
     }
 
 }
