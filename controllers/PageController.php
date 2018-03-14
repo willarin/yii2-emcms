@@ -6,7 +6,7 @@ use Yii;
 use yii\web\Controller;
 
 class PageController extends Controller {
-    
+
     public function behaviors()
     {
         $behaviors = [];
@@ -24,14 +24,22 @@ class PageController extends Controller {
         }
         return $behaviors;
     }
-    
-    public function actions() 
+
+    public function actions()
     {
         return [
             'page' => [
                 'class' => 'almeyda\emcms\web\ViewAction',
             ],
+            'list' => [
+                'class' => 'almeyda\emcms\web\ListAction',
+            ],
+            'create' => [
+                'class' => 'almeyda\emcms\web\CreateAction',
+            ],
+            'load' => [
+                'class' => 'almeyda\emcms\web\LoadAction',
+            ]
         ];
     }
-
 }

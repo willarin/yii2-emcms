@@ -1,7 +1,7 @@
 Emcms Module
 ============
 
-Emcms Module is a simple client-side CMS module for Yii2. 
+Emcms Module is a simple client-side CMS module for Yii2.
 
 ## Installation
 
@@ -252,6 +252,9 @@ If you want to create page with address `yourhost/faq`  you could follow the nex
 ```
 2. create the new file `/views/themes/{your-theme}/common/pages/faq.php`;
 3. open the address `yourhost/faq`;
+
+## User support
+[Read user support documentation](docs/user-support.md)
 
 ## License
 
