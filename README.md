@@ -1,7 +1,7 @@
-Emcms Module
+Emcms CMS Module
 ============
 
-Emcms Module is a simple client-side CMS module for Yii2.
+Emcms is a simple client-side CMS module for Yii2.
 
 ## Installation
 
@@ -60,53 +60,66 @@ return [
                         'pattern' => '<view>',
                         'route' => 'emcms/page/page',
                         'defaults' => ['view' => 'index'],
-                        'suffix' => '.ihtml'
                 ],
                 ...
             ]
         ...
-        ],
-        'view' => [
-            ...
-            'theme' => [
-                'pathMap' => [
-                    '@app/views/layouts' => '@app/views/themes/{your-theme}/blog/layouts',
-                    '@almeyda/emcms/views/page/pages/blog' => '@app/views/themes/{your-theme}/blog/pages',
-                    ...
-            ],
-            ...
         ],
     ],
     ...             
 ]
 ];
 ```
-We use example with 'blog' above.
+
 Please note that rule 'emcms' should be added at the end of the rules stack. Otherwise all simple requests will be processed by the emcms module.
+
+## Overriding views
+
+When you start using yii2-emcms you will probably find that you need to override the default views provided by the module.
+Although view names are not configurable, Yii2 provides a way to override views using themes. To get started you should
+configure your view application component as follows:
+
+```php
+...
+'components' => [
+    'view' => [
+        ...
+        'theme' => [
+            'pathMap' => [
+                '@almeyda/emcms/views/layouts' => '@app/views/emcms/layouts',
+                '@almeyda/emcms/views' => '@app/views/emcms/pages',
+                ...
+        ],
+        ...
+    ],
+],
+...
+```
+
+In the above `pathMap` means that every view in @almeyda/emcms/views will be first searched under `@app/views/emcms/pages` and
+if a view exists in the theme directory it will be used instead of the original view.
 
 ## Usage
 
-Create your index.php page in /views/themes/{your-theme}/blog/pages and add your pages with articles to this folder (like post1.php, post2.php, ...)
+Create your index.php page in your theme folder and add your pages to this folder (like post1.php, post2.php, ...)
 
-##Examples
-###Structure of the folders:
+##Example structure of the folders:
 
 ```
-views/                                       (folder) main folder in the root of your site
-  └─themes/                               (folder) folder with list of themes
-      └─{your-theme}/                (folder) with the name of your theme
-              └─blog/                        (folder) - blog - name of folder according to the pathMap in config 
-                    ├─layout/               (folder) - layout - name of the layout used for blog  accordith to the pathMap in Config
-                    │    └main.php       (file) -   file with html/php for the layout         
-                    └─pages/                (folder) - folder page accopding to the pathMap in Config 
-                        ├─ index.php      (file) - file with the list of posts
-                        ├─ post1.php      (file) - file with the content of 1st post 
-                        └─ post2.php      (file) - file with the content of 2nd post
+views/                        (folder) main folder in the root of your site
+    └─emcms/                  (folder) - folder containing all cms related views/layouts
+        ├─layout/             (folder) - folder containing layout 
+            └main.php         (file) - layout name. It matches 'pathMap' in the configuration        
+        └─pages/              (folder) - folder containing all the views. It matches 'pathMap' in the configuration 
+            ├─ index.php      (file) - file with the list of posts
+            ├─ post1.php      (file) - file with the content of 1st post 
+            └─ post2.php      (file) - file with the content of 2nd post
 ```               
 
 ### File examples
 
-**[main.php]**
+**[main.php]** 
+layout used
 
 ```php
 <?php
@@ -118,7 +131,7 @@ BootstrapAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
-    <meta charset="<?= Yii::$app->charset ?>"/>
+    <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -253,8 +266,8 @@ If you want to create page with address `yourhost/faq`  you could follow the nex
 2. create the new file `/views/themes/{your-theme}/common/pages/faq.php`;
 3. open the address `yourhost/faq`;
 
-## User support
-[Read user support documentation](docs/user-support.md)
+## Authentication support
+[Read authentication support documentation](docs/authentication-support.md)
 
 ## License
 

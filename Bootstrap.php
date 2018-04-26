@@ -7,6 +7,7 @@ use yii\base\BootstrapInterface;
 use dektrium\user\Bootstrap as UserBootstrap;
 use yii\base\InvalidConfigException;
 use almeyda\emcms\models\Page;
+use yii\web\Application as WebApplication;
 
 /**
  * Bootstrap class registers module user for usage by extension.
@@ -20,6 +21,9 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app->hasModule('emcms/user')) {
+            if ($app instanceof WebApplication) {
+                $app->setHomeUrl('/emcms');
+            }
             $components = $app->getComponents();
             if (isset($components['urlManager'])) {
                 if (in_array('page', Yii::$app->db->schema->tableNames)) {
@@ -42,6 +46,9 @@ class Bootstrap implements BootstrapInterface
                         , false);
                 }
             }
+            if (isset($components['view'])) {
+                $app->getView()->theme->pathMap['@dektrium/user/views'] = '@almeyda/emcms/views';
+            }
             if (!$app->hasModule('user')) {
                 $user_config = $app->getModule('emcms/user');
                 $app->setModules(['user' => $user_config]);
@@ -51,7 +58,15 @@ class Bootstrap implements BootstrapInterface
                     \dektrium\user\controllers\SecurityController::className(),
                     \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGIN,
                     function () {
-                        Yii::$app->response->redirect(array('/emcms/page/list'))->send();
+                        Yii::$app->response->redirect(array('/emcms'))->send();
+                        Yii::$app->end();
+                    }
+                );
+                \yii\base\Event::on(
+                    \dektrium\user\controllers\SecurityController::className(),
+                    \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGOUT,
+                    function () {
+                        Yii::$app->response->redirect(array('/user/login'))->send();
                         Yii::$app->end();
                     }
                 );

@@ -1,0 +1,33 @@
+# Codeception Test Suite Configuration
+#
+# Suite for unit or integration tests.
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor: UnitTester
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Unit
+        - \Helper\Config: # Customize this values on the flow
+            validPage:
+                route: blog/test
+                title: test-blog-title
+                description: test desctiption
+                content: test content
+            invalidPage:
+                route: /blog/test
+                title: test-blog-title
+                description: test desctiption
+                content: test content
+        - Db:
+            dsn: 'mysql:host=localhost;dbname=naturaful_test'
+            user: 'root'
+            password: 'a'
+            dump: 'tests/_data/dump.sql'
+            populate: true
+            cleanup: true
+            reconnect: true

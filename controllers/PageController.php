@@ -4,9 +4,33 @@ namespace almeyda\emcms\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use almeyda\emcms\models\Page;
+use yii\data\ActiveDataProvider;
+use yii\helpers\StringHelper;
+use yii\filters\AccessControl;
 
-class PageController extends Controller {
+class PageController extends Controller
+{
+    public $defaultAction = 'list';
 
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        if ($this->action != 'load') {
+            $this->layout = $this->module->adminLayout;;
+        } else {
+            $this->layout = $this->module->customLayout;
+        }
+        parent::init();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function behaviors()
     {
         $behaviors = [];
@@ -22,24 +46,117 @@ class PageController extends Controller {
                 ],
             ];
         }
+        $behaviors['access'] =
+            [
+                'class' => AccessControl::className(),
+                'only' => ['create', 'update', 'list', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ];
         return $behaviors;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function actions()
     {
         return [
             'page' => [
                 'class' => 'almeyda\emcms\web\ViewAction',
             ],
-            'list' => [
-                'class' => 'almeyda\emcms\web\ListAction',
-            ],
-            'create' => [
-                'class' => 'almeyda\emcms\web\CreateAction',
-            ],
-            'load' => [
-                'class' => 'almeyda\emcms\web\LoadAction',
-            ]
         ];
+    }
+
+    /**
+     * Creates new Page
+     * @return string|\yii\web\Response
+     */
+    public function actionCreate()
+    {
+        $model = new Page();
+        $model->setScenario('create');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $output = $this->redirect('list');
+        } else {
+            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
+        }
+        return $output;
+    }
+
+    /**
+     * Displays list of pages
+     * @return string
+     */
+    public function actionList()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Page::find(),
+            'pagination' => [
+                'defaultPageSize' => 10,
+                'pageSize' => 10,
+                'pageSizeLimit' => [1, 50],
+            ],
+        ]);
+        $output = $this->render('list', ['listDataProvider' => $dataProvider]);
+        return $output;
+    }
+
+    /**
+     * Displays page by the given id
+     * @param $id - id of page to load from database
+     */
+    public function actionLoad($id)
+    {
+        try {
+            $page = Page::findOne(['id' => $id]);
+            if ($page) {
+                $this->layout = $this->module->customLayout;
+            }
+            $output = $this->render('load', ['model' => $page]);
+        } catch (NotFoundHttpException $e) {
+            if (YII_DEBUG) {
+                throw new NotFoundHttpException($e->getMessage());
+            } else {
+                throw new NotFoundHttpException(
+                    Yii::t('yii', 'Page not found.')
+                );
+            }
+        }
+        return $output;
+    }
+
+    /**
+     * Updates data for the Page
+     * @param $id - id of Page record
+     */
+    public function actionUpdate($id)
+    {
+        $model = Page::findOne($id);
+        $model->setScenario('update');
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $output = $this->redirect('list');
+        } else {
+            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
+        }
+        return $output;
+    }
+
+    /**
+     * Deletes Page by given id
+     * @param $id - id of Page
+     * @return \yii\web\Response
+     */
+    public function actionDelete($id)
+    {
+        $model = Page::findOne($id);
+        $model->delete();
+        $output = $this->redirect('list');
+        return $output;
     }
 }
