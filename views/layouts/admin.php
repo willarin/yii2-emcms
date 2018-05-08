@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Url;
 use yii\widgets\Breadcrumbs;
 
 BootstrapAsset::register($this);
@@ -45,9 +46,14 @@ if (!Yii::$app->user->isGuest) {
     NavBar::end();
 }
 ?>
+
 <div class="wrap">
     <div class="container">
         <?= Breadcrumbs::widget([
+            'homeLink' => [
+                'label' => Yii::t('yii', 'Authentication'),
+                'url' => Url::to('/emcms'),
+            ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>
