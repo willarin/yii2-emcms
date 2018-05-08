@@ -16,19 +16,6 @@ class PageController extends Controller
 
     /**
      * {@inheritdoc}
-     */
-    public function init()
-    {
-        if ($this->action != 'load') {
-            $this->layout = $this->module->adminLayout;;
-        } else {
-            $this->layout = $this->module->customLayout;
-        }
-        parent::init();
-    }
-
-    /**
-     * {@inheritdoc}
      * @return array
      */
     public function behaviors()
@@ -79,6 +66,7 @@ class PageController extends Controller
      */
     public function actionCreate()
     {
+        $this->layout = $this->module->adminLayout;
         $model = new Page();
         $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -95,6 +83,7 @@ class PageController extends Controller
      */
     public function actionList()
     {
+        $this->layout = $this->module->adminLayout;
         $dataProvider = new ActiveDataProvider([
             'query' => Page::find(),
             'pagination' => [
@@ -137,6 +126,7 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
+        $this->layout = $this->module->adminLayout;
         $model = Page::findOne($id);
         $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -154,6 +144,7 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
+        $this->layout = $this->module->adminLayout;
         $model = Page::findOne($id);
         $model->delete();
         $output = $this->redirect('list');
