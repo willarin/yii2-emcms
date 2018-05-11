@@ -18,6 +18,8 @@ class m180328_063957_create_page_table extends Migration
             'title' => $this->string(300)->notNull(),
             'description' => $this->string(2048)->notNull(),
             'content' => $this->text(),
+            'timeCreated' => $this->dateTime(),
+            'timeUpdated' => $this->dateTime(),
         ]);
     }
 
