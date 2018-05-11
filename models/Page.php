@@ -9,14 +9,6 @@ use yii\db\ActiveRecord;
 class Page extends ActiveRecord
 {
     /**
-     * @return string
-     */
-    public static function tableName()
-    {
-        return '{{%page}}';
-    }
-
-    /**
      * Define rules for validation
      */
     public function rules()
