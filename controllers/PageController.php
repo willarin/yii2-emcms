@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link https://almeyda.repositoryhosting.com/git_public/almeyda/yii2-emcms.git
+ * @copyright Copyright (c) 2018 Almeyda LLC
+ *
+ * The full copyright and license information is stored in the LICENSE file distributed with this source code.
+ */
 
 namespace almeyda\emcms\controllers;
 
@@ -10,13 +16,18 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\filters\AccessControl;
 
+/**
+ * Controller contains all actions to manipulate pages at the admin side and render at the client side.
+ */
 class PageController extends Controller
 {
+    /**
+     * {@inheritdoc}
+     */
     public $defaultAction = 'list';
 
     /**
      * {@inheritdoc}
-     * @return array
      */
     public function behaviors()
     {
@@ -49,7 +60,6 @@ class PageController extends Controller
 
     /**
      * {@inheritdoc}
-     * @return array
      */
     public function actions()
     {

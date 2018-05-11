@@ -1,7 +1,7 @@
-Emcms CMS Module
+Emcms Content Management Module
 ============
 
-Emcms is a simple client-side CMS module for Yii2.
+Emcms is a simple client-side Content Management Module for Yii2.
 
 ## Installation
 
