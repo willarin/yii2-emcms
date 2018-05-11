@@ -13,7 +13,7 @@
         {
             "name": "Dmitriy Evdokimov",
             "email": "dmitriy@almeydahost.com",
-            "homepage": "http://almeydahost.com",
+            "homepage": "http://almeyda.biz",
             "role": "Developer"
         }
     ],
@@ -22,8 +22,8 @@
         "php": ">=5.5.0",
         "yiisoft/yii2": "*",
         "dektrium/yii2-user": "*",
-      "mihaildev/yii2-elfinder": "*",
-      "dominus77/yii2-tinymce-widget": "~2.0"
+        "mihaildev/yii2-elfinder": "*",
+        "dominus77/yii2-tinymce-widget": "~2.0"
     },
     "autoload": {
         "psr-4": {

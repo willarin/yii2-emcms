@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link https://almeyda.repositoryhosting.com/git_public/almeyda/yii2-emcms.git
+ * @copyright Copyright (c) 2018 Almeyda LLC
+ *
+ * The full copyright and license information is stored in the LICENSE file distributed with this source code.
+ */
 
 namespace almeyda\emcms;
 
@@ -17,7 +23,7 @@ class Bootstrap implements BootstrapInterface
 {
     /**
      * {@inheritdoc}
-     * */
+     */
     public function bootstrap($app)
     {
         if ($app->hasModule('emcms/user')) {
@@ -41,9 +47,7 @@ class Bootstrap implements BootstrapInterface
                     foreach ($pages as $page) {
                         $rulesToAdd[str_replace('/', '', $page['route'])] = array('pattern' => $page['route'], 'route' => 'emcms/page/load', 'defaults' => ['id' => $page['id']]);
                     }
-                    $app->getUrlManager()->addRules(
-                        $rulesToAdd
-                        , false);
+                    $app->getUrlManager()->addRules($rulesToAdd, false);
                 }
             }
             if (isset($components['view'])) {
