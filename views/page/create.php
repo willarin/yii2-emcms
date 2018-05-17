@@ -6,6 +6,8 @@ use yii\bootstrap\BootstrapAsset;
 use dominus77\tinymce\TinyMce;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\web\JsExpression;
+use dominus77\tinymce\components\MihaildevElFinder;
 
 BootstrapAsset::register($this);
 
@@ -30,7 +32,7 @@ $this->title = Yii::t('user', $model->scenario == 'create' ? 'Create page' : 'Up
         'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | csstemplates",
         'image_advtab' => true,
         'menubar' => false,
-        'setup' => new \yii\web\JsExpression("function(editor) {
+        'setup' => new JsExpression("function(editor) {
         editor.addButton('csstemplates', {
           type: 'menubutton',
           text: 'Select template',
@@ -39,7 +41,7 @@ $this->title = Yii::t('user', $model->scenario == 'create' ? 'Create page' : 'Up
       }")
     ],
     'fileManager' => [
-        'class' => \dominus77\tinymce\components\MihaildevElFinder::className(),
+        'class' => MihaildevElFinder::className(),
         'controller' => 'emcms/elfinder',
         'title' => 'File manager',
         'width' => 900,
