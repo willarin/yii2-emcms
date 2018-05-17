@@ -52,7 +52,7 @@ class Page extends ActiveRecord
         return $scenarios;
     }
 
-    public static function LoadPagesByTheme($theme)
+    public static function loadPagesByTheme($theme)
     {
         $result = Page::find()->Where(['LIKE', 'page.route', $theme])->orderBy(['timeUpdated' => SORT_DESC])->all();
         return $result;
