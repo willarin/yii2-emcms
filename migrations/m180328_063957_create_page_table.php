@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @link https://almeyda.repositoryhosting.com/git_public/almeyda/yii2-emcms.git
+ * @copyright Copyright (c) 2018 Almeyda LLC
+ *
+ * The full copyright and license information is stored in the LICENSE file distributed with this source code.
+ */
 use yii\db\Migration;
 
 /**
@@ -21,6 +26,18 @@ class m180328_063957_create_page_table extends Migration
             'timeCreated' => $this->dateTime(),
             'timeUpdated' => $this->dateTime(),
         ]);
+        $this->createTable('listings', [
+            'id' => $this->primaryKey()->unsigned(),
+            'name' => $this->string()->notNull(),
+            'timeCreated' => $this->dateTime(),
+            'timeUpdated' => $this->dateTime(),
+        ]);
+        $this->createTable('listingPage', [
+            'id' => $this->primaryKey()->unsigned(),
+            'pageId' => $this->unsigned(),
+            'listingId' => $this->unsigned(),
+            'sort' => "ENUM('ASC', 'DESC')",
+        ]);
     }
 
     /**
@@ -29,5 +46,7 @@ class m180328_063957_create_page_table extends Migration
     public function safeDown()
     {
         $this->dropTable('page');
+        $this->dropTable('listing');
+        $this->dropTable('listingPage');
     }
 }
