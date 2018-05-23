@@ -56,24 +56,16 @@ class ListingController extends Controller
         $this->layout = $this->module->adminLayout;
         $model = new Listing();
         $model->setScenario('create');
-        $dataProvider = new ActiveDataProvider([
-            'query' => Page::find(),
-            'pagination' => [
-                'defaultPageSize' => 10,
-                'pageSize' => 10,
-                'pageSizeLimit' => [1, 50],
-            ],
-        ]);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $output = $this->redirect('list');
         } else {
-            $output = $this->render('create', ['model' => $model, 'listDataProvider' => $dataProvider]);
+            $output = $this->render('create', ['model' => $model]);
         }
         return $output;
     }
 
     /**
-     * Displays list of listngs
+     * Displays list of listings
      * @return string
      */
     public function actionList()
@@ -92,8 +84,8 @@ class ListingController extends Controller
     }
 
     /**
-     * Updates data for the Page
-     * @param $id - id of Page record
+     * Updates data for the Listing
+     * @param $id - id of Listing record
      */
     public function actionUpdate($id)
     {
@@ -101,7 +93,7 @@ class ListingController extends Controller
         $model = Listing::findOne($id);
         $model->setScenario('update');
         $dataProvider = new ActiveDataProvider([
-            'query' => Page::find(),
+            'query' => Page::find()->where(['id' => $model->getPageIds($id)]),
             'pagination' => [
                 'defaultPageSize' => 10,
                 'pageSize' => 10,
@@ -117,8 +109,8 @@ class ListingController extends Controller
     }
 
     /**
-     * Deletes Page by given id
-     * @param $id - id of Page
+     * Deletes Listing by given id
+     * @param $id - id of Listing
      * @return \yii\web\Response
      */
     public function actionDelete($id)

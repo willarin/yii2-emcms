@@ -20,7 +20,7 @@ class Module extends \yii\base\Module
      * @var string layout file used for the client side rendering
      */
     public $customLayout = 'main';
-    public $defaultRoute = 'page';
+    public $defaultRoute = 'listing';
     public $adminLayout = 'admin';
     public $imagePath = 'images';
     public $cssTemplates = [];

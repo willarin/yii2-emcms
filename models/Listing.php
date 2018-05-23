@@ -5,7 +5,6 @@
  *
  * The full copyright and license information is stored in the LICENSE file distributed with this source code.
  */
-
 namespace almeyda\emcms\models;
 
 use yii\behaviors\TimestampBehavior;
@@ -48,6 +47,16 @@ class Listing extends ActiveRecord
     }
 
     /**
+     * Deletes Pages and ListingPage records associated with Listing when deleted
+     */
+    public function afterDelete()
+    {
+        Page::deleteAll(['id' => $this->getPageIds($this->id)]);
+        ListingPage::deleteAll(['pageId' => $this->getPageIds($this->id)]);
+        parent::afterDelete();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function scenarios()
@@ -58,4 +67,17 @@ class Listing extends ActiveRecord
         return $scenarios;
     }
 
+    /**
+     * @param $listingId integer - id of listing
+     * @return array - zero-bazed array of Page id's from the listing
+     */
+    public function getPageIds($listingId)
+    {
+        $pages = ListingPage::find()->select('pageId')->where(['listingId' => $listingId])->all();
+        $pageIds = [];
+        foreach ($pages as $page) {
+            $pageIds[] = $page->pageId;
+        }
+        return $pageIds;
+    }
 }

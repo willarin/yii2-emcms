@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @link https://almeyda.repositoryhosting.com/git_public/almeyda/yii2-emcms.git
+ * @copyright Copyright (c) 2018 Almeyda LLC
+ *
+ * The full copyright and license information is stored in the LICENSE file distributed with this source code.
+ */
 namespace almeyda\emcms\models;
 
 use yii\behaviors\TimestampBehavior;
@@ -44,6 +49,35 @@ class Page extends ActiveRecord
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (count($changedAttributes)) {
+            $listingPage = ListingPage::find()->where(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')])->one();
+            if (count($listingPage)) {
+
+            } else {
+                $listingPage = new ListingPage();
+                $listingPage->setScenario('create');
+                $listingPage->load(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')], '');
+                $listingPage->save();
+            }
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * Deletes listingPage record when page is deleting
+     */
+    public function afterDelete()
+    {
+        $listingPage = ListingPage::find()->where(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')])->one();
+        $listingPage->delete();
+        parent::afterDelete();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();

@@ -80,7 +80,7 @@ class PageController extends Controller
         $model = new Page();
         $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $output = $this->redirect('list');
+            $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
         } else {
             $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
         }
@@ -140,7 +140,7 @@ class PageController extends Controller
         $model = Page::findOne($id);
         $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $output = $this->redirect('list');
+            $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
         } else {
             $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
         }
@@ -157,7 +157,7 @@ class PageController extends Controller
         $this->layout = $this->module->adminLayout;
         $model = Page::findOne($id);
         $model->delete();
-        $output = $this->redirect('list');
+        $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
         return $output;
     }
 }
