@@ -26,7 +26,7 @@ class m180328_063957_create_page_table extends Migration
             'timeCreated' => $this->dateTime(),
             'timeUpdated' => $this->dateTime(),
         ]);
-        $this->createTable('listings', [
+        $this->createTable('listing', [
             'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string()->notNull(),
             'timeCreated' => $this->dateTime(),
@@ -34,8 +34,8 @@ class m180328_063957_create_page_table extends Migration
         ]);
         $this->createTable('listingPage', [
             'id' => $this->primaryKey()->unsigned(),
-            'pageId' => $this->unsigned(),
-            'listingId' => $this->unsigned(),
+            'pageId' => $this->integer()->unsigned(),
+            'listingId' => $this->integer()->unsigned(),
             'sort' => "ENUM('ASC', 'DESC')",
         ]);
     }
