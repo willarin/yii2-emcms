@@ -23,7 +23,8 @@
         "yiisoft/yii2": "*",
         "dektrium/yii2-user": "*",
         "mihaildev/yii2-elfinder": "*",
-        "dominus77/yii2-tinymce-widget": "~2.0"
+        "dominus77/yii2-tinymce-widget": "~2.0",
+        "richardfan1126/yii2-sortable-gridview": "*"
     },
     "autoload": {
         "psr-4": {
