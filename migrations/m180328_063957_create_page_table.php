@@ -36,7 +36,7 @@ class m180328_063957_create_page_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'pageId' => $this->integer()->unsigned(),
             'listingId' => $this->integer()->unsigned(),
-            'sort' => "ENUM('ASC', 'DESC')",
+            'sort' => $this->integer()->unsigned(),
         ]);
     }
 
