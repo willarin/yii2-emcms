@@ -14,6 +14,9 @@ use yii\db\ActiveRecord;
 
 class ListingPage extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return '{{%listingPage}}';

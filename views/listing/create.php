@@ -14,6 +14,8 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\web\JsExpression;
 use dominus77\tinymce\components\MihaildevElFinder;
+use richardfan\sortable\SortableGridView;
+use yii\helpers\Url;
 
 BootstrapAsset::register($this);
 
@@ -29,10 +31,12 @@ ActiveForm::end();
 ?>
 <?php if (isset($listDataProvider)): ?>
     <H1 class="text-center">List of pages</H1>
-<?= GridView::widget([
+    <?= SortableGridView::widget([
         'dataProvider' => $listDataProvider,
         'layout' => "{pager}\n{items}\n{summary}\n",
         'summary' => '',
+        'sortUrl' => Url::to(['sort']),
+        'sortingPromptText' => 'Sorting...',
         'columns' => [
             'id',
             [

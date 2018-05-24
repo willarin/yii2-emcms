@@ -5,6 +5,7 @@
  *
  * The full copyright and license information is stored in the LICENSE file distributed with this source code.
  */
+
 namespace almeyda\emcms\models;
 
 use yii\behaviors\TimestampBehavior;
@@ -37,6 +38,10 @@ class Page extends ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+
     public function behaviors()
     {
         return [
@@ -49,12 +54,16 @@ class Page extends ActiveRecord
         ];
     }
 
+    /**
+     * Creates new or updates existing ListingPage record when Page is saved
+     */
     public function afterSave($insert, $changedAttributes)
     {
         if (count($changedAttributes)) {
             $listingPage = ListingPage::find()->where(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')])->one();
             if (count($listingPage)) {
-
+                $listingPage->setScenario('update');
+                $listingPage->setAttribute('listingId', \Yii::$app->getRequest()->get('listingId'));
             } else {
                 $listingPage = new ListingPage();
                 $listingPage->setScenario('create');

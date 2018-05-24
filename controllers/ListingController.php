@@ -8,6 +8,7 @@
 
 namespace almeyda\emcms\controllers;
 
+use almeyda\emcms\models\ListingPage;
 use almeyda\emcms\models\Page;
 use Yii;
 use yii\web\Controller;
@@ -93,7 +94,8 @@ class ListingController extends Controller
         $model = Listing::findOne($id);
         $model->setScenario('update');
         $dataProvider = new ActiveDataProvider([
-            'query' => Page::find()->where(['id' => $model->getPageIds($id)]),
+            'query' => Page::find()->where(['page.id' => $model->getPageIds($id)])->
+            join('INNER JOIN', 'listingPage lp', 'page.id = lp.pageId')->orderBy('lp.sort'),
             'pagination' => [
                 'defaultPageSize' => 10,
                 'pageSize' => 10,
@@ -120,5 +122,24 @@ class ListingController extends Controller
         $model->delete();
         $output = $this->redirect('list');
         return $output;
+    }
+
+    /**
+     * Fills the field 'sort' of ListingPage records with values of array sent by ajax request from the GridView
+     */
+    public function actionSort()
+    {
+        if (!\Yii::$app->request->isAjax) {
+            throw new HttpException(404);
+        }
+
+        if (isset($_POST['items']) && is_array($_POST['items'])) {
+            foreach ($_POST['items'] as $i => $item) {
+                $page = ListingPage::findOne(['pageId' => $item]);
+                $page->updateAttributes([
+                    'sort' => $i,
+                ]);
+            }
+        }
     }
 }
