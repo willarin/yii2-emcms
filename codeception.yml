@@ -11,3 +11,10 @@ extensions:
 settings:
     bootstrap: ../_bootstrap.php
     colors: true
+modules:
+    enabled:
+        - Asserts
+        - \Helper\Unit
+        - Yii2:
+              configFile: '../../../config/console-test.php'
+              part: [orm, email]

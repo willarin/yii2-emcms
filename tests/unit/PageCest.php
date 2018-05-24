@@ -12,13 +12,21 @@ class PageCest
     {
     }
 
-    // tests
     public function CreateValidPage(UnitTester $I)
     {
         $pageData = $I->getConfig('validPage');
         $page = new Page();
-        $page->setAttributes($pageData);
         $page->setScenario('create');
+        $page->setAttributes($pageData);
         $I->assertTrue($page->save());
+    }
+
+    public function CreateInvalidPage(UnitTester $I)
+    {
+        $pageData = $I->getConfig('invalidPage');
+        $page = new Page();
+        $page->setScenario('create');
+        $page->setAttributes($pageData);
+        $I->assertFalse($page->save());
     }
 }
