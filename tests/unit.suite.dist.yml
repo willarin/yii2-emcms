@@ -27,6 +27,9 @@ modules:
                 name: TestListing
             invalidListing:
                 name: ""
+            pageToDelete:
+                id: 1
+                listingId: 1
         - Db:
             dsn: 'mysql:host=localhost;dbname=naturaful_test'
             user: 'root'

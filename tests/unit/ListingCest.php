@@ -44,8 +44,24 @@ class ListingCest
      */
     public function GetPageIds(UnitTester $I)
     {
+        $pageConfig = $I->getConfig('pageToDelete');
         $listing = new Listing();
-        $result = $listing->getPageIds(1);
+        $result = $listing->getPageIds($pageConfig['listingId']);
         $I->assertTrue(is_array($result));
+    }
+
+    /**
+     * Test that checks deleting Listing, all Pages and ListingPage records associated with Pages
+     * @param UnitTester $I
+     */
+    public function DeleteListing(UnitTester $I)
+    {
+        $pageConfig = $I->getConfig('pageToDelete');
+        $I->seeRecord('almeyda\emcms\models\ListingPage', ['pageId' => $pageConfig['id']]);
+        $listing = new Listing();
+        $listing->id = $pageConfig['listingId'];
+        $listing->refresh();
+        $listing->delete();
+        $I->dontSeeRecord('almeyda\emcms\models\ListingPage', ['pageId' => $pageConfig['id']]);
     }
 }
