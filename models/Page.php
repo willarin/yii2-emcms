@@ -95,9 +95,27 @@ class Page extends ActiveRecord
         return $scenarios;
     }
 
+    /**
+     * Method forms list of Pages to display for users by the theme name from the route
+     * @param $theme
+     * @return mixed
+     */
     public static function loadPagesByTheme($theme)
     {
         $result = Page::find()->Where(['LIKE', 'page.route', $theme])->orderBy(['timeUpdated' => SORT_DESC])->all();
+        return $result;
+    }
+
+    /**
+     * Method forms list of Pages to display for users by the list name
+     * @param $listName string name of list to be displayed
+     * @return mixed
+     */
+    public static function loadPagesByListName($listName)
+    {
+        $result = Page::find()->leftJoin('listingPage', 'page.id = listingPage.pageId')->
+        leftJoin('listing', 'listingPage.listingId = listing.id')->orderBy(['listingPage.sort' => SORT_ASC])->
+        where(['listing.name' => $listName])->all();
         return $result;
     }
 
