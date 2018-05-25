@@ -118,18 +118,20 @@ class Page extends ActiveRecord
      */
     public function FormMenuItems($cssTemplates)
     {
-        $menuItems = "";
-        foreach ($cssTemplates as $templateName => $templateCssValues) {
-            foreach ($templateCssValues as $index => $pathToCss) {
-                $templateCssValues[$index] = "'" . $pathToCss . "'";
-            }
-            $menuItems .= "{
+        $menuItems = '';
+        if (is_array($cssTemplates)) {
+            foreach ($cssTemplates as $templateName => $templateCssValues) {
+                foreach ($templateCssValues as $index => $pathToCss) {
+                    $templateCssValues[$index] = "'" . $pathToCss . "'";
+                }
+                $menuItems .= "{
                 text: '" . $templateName . "',
                 onclick: function() {
                     editor.contentCSS = [" . implode(',', $templateCssValues) . "];
                     editor.render();
                     }
                 },";
+            }
         }
         return $menuItems;
     }

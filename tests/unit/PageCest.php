@@ -12,6 +12,10 @@ class PageCest
     {
     }
 
+    /**
+     * Test that checks creation of page with valid input data
+     * @param UnitTester $I
+     */
     public function CreateValidPage(UnitTester $I)
     {
         $pageData = $I->getConfig('validPage');
@@ -21,6 +25,10 @@ class PageCest
         $I->assertTrue($page->save());
     }
 
+    /**
+     * Test that checks not creation of page with not valid input data
+     * @param UnitTester $I
+     */
     public function CreateInvalidPage(UnitTester $I)
     {
         $pageData = $I->getConfig('invalidPage');

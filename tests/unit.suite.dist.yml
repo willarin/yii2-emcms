@@ -23,6 +23,10 @@ modules:
                 title: test-blog-title
                 description: test desctiption
                 content: test content
+            validListing:
+                name: TestListing
+            invalidListing:
+                name: ""
         - Db:
             dsn: 'mysql:host=localhost;dbname=naturaful_test'
             user: 'root'
