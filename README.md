@@ -32,6 +32,15 @@ to the *"require"* section of your `composer.json` file and run
 ```
 $ php composer.phar update
 ```
+## Update database schema
+
+The last thing you need to do is updating your database schema by applying the
+migrations. Make sure that you have properly configured `db` application component
+and run the following command:
+
+```bash
+$ php yii migrate/up --migrationPath=@vendor/almeyda/yii2-emcms/migrations
+```
 
 ## Configuration
 

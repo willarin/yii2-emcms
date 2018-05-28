@@ -8,7 +8,7 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `page`.
+ * Handles the creation of basic tables.
  */
 class m180328_063957_create_page_table extends Migration
 {
@@ -32,7 +32,7 @@ class m180328_063957_create_page_table extends Migration
             'timeCreated' => $this->dateTime(),
             'timeUpdated' => $this->dateTime(),
         ]);
-        $this->createTable('listingPage', [
+        $this->createTable('listing_page', [
             'id' => $this->primaryKey()->unsigned(),
             'pageId' => $this->integer()->unsigned(),
             'listingId' => $this->integer()->unsigned(),
@@ -47,6 +47,6 @@ class m180328_063957_create_page_table extends Migration
     {
         $this->dropTable('page');
         $this->dropTable('listing');
-        $this->dropTable('listingPage');
+        $this->dropTable('listing_page');
     }
 }

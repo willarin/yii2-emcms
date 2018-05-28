@@ -12,14 +12,13 @@ use almeyda\emcms\models\ListingPage;
 use almeyda\emcms\models\Page;
 use Yii;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 use almeyda\emcms\models\Listing;
 use yii\data\ActiveDataProvider;
-use yii\helpers\StringHelper;
 use yii\filters\AccessControl;
 
 /**
- * Controller contains all actions to manipulate pages at the admin side and render at the client side.
+ * Controller contains CRUD actions for work with listings of pages in the admin side.
+ * It also provides rendering of listing at the client side.
  */
 class ListingController extends Controller
 {
@@ -33,10 +32,10 @@ class ListingController extends Controller
      */
     public function behaviors()
     {
-        $behaviors = [];
+        $behaviors = parent::behaviors();
         $behaviors['access'] =
             [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['create', 'update', 'list', 'delete'],
                 'rules' => [
                     [
@@ -87,6 +86,7 @@ class ListingController extends Controller
     /**
      * Updates data for the Listing
      * @param $id - id of Listing record
+     * @return string|\yii\web\Response
      */
     public function actionUpdate($id)
     {
@@ -95,7 +95,7 @@ class ListingController extends Controller
         $model->setScenario('update');
         $dataProvider = new ActiveDataProvider([
             'query' => Page::find()->where(['page.id' => $model->getPageIds($id)])->
-            join('INNER JOIN', 'listingPage lp', 'page.id = lp.pageId')->orderBy('lp.sort'),
+            join('INNER JOIN', 'listing_page lp', 'page.id = lp.pageId')->orderBy('lp.sort'),
             'pagination' => [
                 'defaultPageSize' => 10,
                 'pageSize' => 10,

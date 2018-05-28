@@ -8,8 +8,6 @@
 
 namespace almeyda\emcms\models;
 
-use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
 use yii\db\ActiveRecord;
 
 class ListingPage extends ActiveRecord
@@ -19,8 +17,9 @@ class ListingPage extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%listingPage}}';
+        return '{{%ListingPage}}';
     }
+    
     /**
      * {@inheritdoc}
      */

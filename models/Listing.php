@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
 
 class Listing extends ActiveRecord
 {
+    
     /**
      * Define rules for validation
      */
@@ -22,7 +23,8 @@ class Listing extends ActiveRecord
             'nameUnique' => [
                 'name',
                 'unique',
-                'message' => \Yii::t('app', 'Name has been already taken'), 'on' => ['create', 'update']
+                'message' => \Yii::t('app', 'Name is already taken'),
+                'on' => ['create', 'update']
             ],
             'fieldsRequired' => [['name'], 'required', 'on' => ['create', 'update']],
             'nameValid' => [['name'], 'match', 'pattern' => '/^[a-zA-Z0-9]+$/'],
@@ -38,7 +40,7 @@ class Listing extends ActiveRecord
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'timeCreated',
                 'updatedAtAttribute' => 'timeUpdated',
                 'value' => new Expression('NOW()'),
@@ -69,7 +71,7 @@ class Listing extends ActiveRecord
 
     /**
      * @param $listingId integer - id of listing
-     * @return array - zero-bazed array of Page id's from the listing
+     * @return array - zero-based array of Page id's from the listing
      */
     public function getPageIds($listingId)
     {

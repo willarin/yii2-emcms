@@ -41,12 +41,11 @@ class Page extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-
     public function behaviors()
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'timeCreated',
                 'updatedAtAttribute' => 'timeUpdated',
                 'value' => new Expression('NOW()'),
@@ -102,7 +101,7 @@ class Page extends ActiveRecord
      */
     public static function loadPagesByTheme($theme)
     {
-        $result = Page::find()->Where(['LIKE', 'page.route', $theme])->orderBy(['timeUpdated' => SORT_DESC])->all();
+        $result = Page::find()->where(['LIKE', 'page.route', $theme])->orderBy(['timeUpdated' => SORT_DESC])->all();
         return $result;
     }
 
@@ -120,7 +119,8 @@ class Page extends ActiveRecord
     }
 
     /**
-     * Method forms string of settings for tinyMce custom menu button(https://www.tinymce.com/docs/demo/custom-toolbar-menu-button/)
+     * Method forms string of settings for tinyMce custom menu button
+     * @link https://www.tinymce.com/docs/demo/custom-toolbar-menu-button
      * @param $cssTemplates module property $cssTemplates e.g.
      * cssTemplates => [
      *      template_name1 => [
@@ -134,7 +134,7 @@ class Page extends ActiveRecord
      * ]
      * @return string formatted string for tinyMce setup section
      */
-    public function FormMenuItems($cssTemplates)
+    public function formMenuItems($cssTemplates)
     {
         $menuItems = '';
         if (is_array($cssTemplates)) {

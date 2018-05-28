@@ -5,22 +5,17 @@
  *
  * The full copyright and license information is stored in the LICENSE file distributed with this source code.
  */
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\BootstrapAsset;
-use dominus77\tinymce\TinyMce;
-use yii\grid\GridView;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\web\JsExpression;
-use dominus77\tinymce\components\MihaildevElFinder;
 use richardfan\sortable\SortableGridView;
 use yii\helpers\Url;
 
 BootstrapAsset::register($this);
 
 $this->title = Yii::t('user', $model->scenario == 'create' ? 'Create listing' : 'Update listing'); ?>
-<H1 class="text-center"><?= $model->scenario == 'create' ? 'Listing creation' : 'Listing updating' ?></H1>
+<H1 class="text-center"><?= $model->scenario == 'create' ? 'Listing creation' : '' ?></H1>
 <?php $form = ActiveForm::begin(['class' => 'create-form']); ?>
 <?= $form->field($model,
     'name')->textInput(['placeholder' => Yii::t('app', 'Enter name of listing')])->label(Yii::t('app', 'Listing name')); ?>
@@ -64,7 +59,7 @@ ActiveForm::end();
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['page/delete', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')], [
                             'class' => '',
                             'data' => [
-                                'confirm' => Yii::t('app', 'Are you absolutely sure ? You will lose all the information about page "' . $model->title . '"'),
+                                'confirm' => Yii::t('app', 'Are you absolutely sure? This action will remove BOTH listing "' . $model->title . '" itself and all pages associations with this listing'),
                                 'method' => 'post',
                             ],
                         ]);

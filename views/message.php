@@ -10,9 +10,9 @@
  * @var yii\web\View $this
  * @var dektrium\user\Module $module
  */
+if (isset($title)) {
+    $this->title = $title;
+    $this->params['breadcrumbs'][] = $title;
+}
 
-$this->title = $title;
-$this->params['breadcrumbs'][] = $title;
-?>
-
-<?= $this->render('/_alert', ['module' => $module]);
+echo $this->render('/_alert', ['module' => $module]);
