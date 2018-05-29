@@ -17,7 +17,7 @@ class ListingPage extends ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%ListingPage}}';
+        return '{{%listing_page}}';
     }
     
     /**

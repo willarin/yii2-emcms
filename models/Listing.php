@@ -49,15 +49,22 @@ class Listing extends ActiveRecord
     }
 
     /**
-     * Deletes Pages and ListingPage records associated with Listing when deleted
+     * Unlink Pages and delete associated ListingPage records
      */
-    public function afterDelete()
+    public function beforeDelete()
     {
-        Page::deleteAll(['id' => $this->getPageIds($this->id)]);
-        ListingPage::deleteAll(['pageId' => $this->getPageIds($this->id)]);
-        parent::afterDelete();
+        $this->unlinkAll('pages', true);
+        return parent::beforeDelete();
     }
-
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPages()
+    {
+        return $this->hasMany(Page::class, ['id' => 'pageId'])->viaTable('listing_page', ['listingId' => 'id'])
+            ->leftJoin('listing_page lp', 'lp.pageId = page.id')->orderBy(['lp.sort' => SORT_ASC]);
+    }
     /**
      * {@inheritdoc}
      */
@@ -70,15 +77,14 @@ class Listing extends ActiveRecord
     }
 
     /**
-     * @param $listingId integer - id of listing
      * @return array - zero-based array of Page id's from the listing
      */
-    public function getPageIds($listingId)
+    public function getPageIds()
     {
-        $pages = ListingPage::find()->select('pageId')->where(['listingId' => $listingId])->all();
+        $pages = $this->getPages()->all();
         $pageIds = [];
         foreach ($pages as $page) {
-            $pageIds[] = $page->pageId;
+            $pageIds[] = $page->id;
         }
         return $pageIds;
     }

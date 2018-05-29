@@ -58,31 +58,11 @@ class Page extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        if (count($changedAttributes)) {
-            $listingPage = ListingPage::find()->where(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')])->one();
-            if (count($listingPage)) {
-                $listingPage->setScenario('update');
-                $listingPage->setAttribute('listingId', \Yii::$app->getRequest()->get('listingId'));
-            } else {
-                $listingPage = new ListingPage();
-                $listingPage->setScenario('create');
-                $listingPage->load(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')], '');
-                $listingPage->save();
-            }
-        }
+        $listing = Listing::findOne(\Yii::$app->getRequest()->get('listingId'));
+        $listing->link('pages', $this);
         parent::afterSave($insert, $changedAttributes);
     }
-
-    /**
-     * Deletes listingPage record when page is deleting
-     */
-    public function afterDelete()
-    {
-        $listingPage = ListingPage::find()->where(['pageId' => $this->id, 'listingId' => \Yii::$app->getRequest()->get('listingId')])->one();
-        $listingPage->delete();
-        parent::afterDelete();
-    }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -113,7 +93,7 @@ class Page extends ActiveRecord
     public static function loadPagesByListName($listName)
     {
         $result = Page::find()->leftJoin('listingPage', 'page.id = listingPage.pageId')->
-        leftJoin('listing', 'listingPage.listingId = listing.id')->orderBy(['listingPage.sort' => SORT_ASC])->
+        leftJoin('listing', 'listing_page.listingId = listing.id')->orderBy(['listing_page.sort' => SORT_ASC])->
         where(['listing.name' => $listName])->all();
         return $result;
     }

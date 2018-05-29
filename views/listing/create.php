@@ -59,7 +59,7 @@ ActiveForm::end();
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['page/delete', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')], [
                             'class' => '',
                             'data' => [
-                                'confirm' => Yii::t('app', 'Are you absolutely sure? This action will remove BOTH listing "' . $model->title . '" itself and all pages associations with this listing'),
+                                'confirm' => Yii::t('app', 'Are you absolutely sure? This action will remove page "' . $model->title . '"'),
                                 'method' => 'post',
                             ],
                         ]);

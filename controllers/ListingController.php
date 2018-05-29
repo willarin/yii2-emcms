@@ -26,7 +26,16 @@ class ListingController extends Controller
      * {@inheritdoc}
      */
     public $defaultAction = 'list';
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeAction($action)
+    {
+        $this->layout = $this->module->adminLayout;
+        return parent::beforeAction($action);
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -53,7 +62,6 @@ class ListingController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout = $this->module->adminLayout;
         $model = new Listing();
         $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -70,7 +78,6 @@ class ListingController extends Controller
      */
     public function actionList()
     {
-        $this->layout = $this->module->adminLayout;
         $dataProvider = new ActiveDataProvider([
             'query' => Listing::find(),
             'pagination' => [
@@ -90,12 +97,10 @@ class ListingController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = $this->module->adminLayout;
         $model = Listing::findOne($id);
         $model->setScenario('update');
         $dataProvider = new ActiveDataProvider([
-            'query' => Page::find()->where(['page.id' => $model->getPageIds($id)])->
-            join('INNER JOIN', 'listing_page lp', 'page.id = lp.pageId')->orderBy('lp.sort'),
+            'query' => $model->getPages(),
             'pagination' => [
                 'defaultPageSize' => 10,
                 'pageSize' => 10,
@@ -117,7 +122,6 @@ class ListingController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = $this->module->adminLayout;
         $model = Listing::findOne($id);
         $model->delete();
         $output = $this->redirect('list');
