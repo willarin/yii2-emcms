@@ -65,6 +65,7 @@ class Listing extends ActiveRecord
         return $this->hasMany(Page::class, ['id' => 'pageId'])->viaTable('listing_page', ['listingId' => 'id'])
             ->leftJoin('listing_page lp', 'lp.pageId = page.id')->orderBy(['lp.sort' => SORT_ASC]);
     }
+    
     /**
      * {@inheritdoc}
      */
@@ -87,5 +88,21 @@ class Listing extends ActiveRecord
             $pageIds[] = $page->id;
         }
         return $pageIds;
+    }
+    
+    /**
+     * Method that returns indexed array of listings to display in select
+     * @return array
+     */
+    public function selectListings()
+    {
+        $result = [];
+        $listings = Listing::find()->all();
+        if (is_array($listings)) {
+            foreach ($listings as $listing) {
+                $result[$listing->id] = $listing->name;
+            }
+        }
+        return $result;
     }
 }

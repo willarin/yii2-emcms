@@ -58,8 +58,17 @@ class Page extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $listing = Listing::findOne(\Yii::$app->getRequest()->get('listingId'));
-        $listing->link('pages', $this);
+        $this->unlinkAll('listing', true);
+        if (\Yii::$app->getRequest()->get('listingId')) {
+            $listing = Listing::findOne(\Yii::$app->getRequest()->get('listingId'));
+        } elseif (\Yii::$app->getRequest()->getBodyParam('listingId')) {
+            $listing = Listing::findOne(\Yii::$app->getRequest()->getBodyParam('listingId'));
+        } else {
+            $listing = null;
+        }
+        if ($listing) {
+            $this->link('listing', $listing);
+        }
         parent::afterSave($insert, $changedAttributes);
     }
     
@@ -132,5 +141,13 @@ class Page extends ActiveRecord
             }
         }
         return $menuItems;
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getListing()
+    {
+        return $this->hasOne(Listing::class, ['id' => 'listingId'])->viaTable('listing_page', ['pageId' => 'id']);
     }
 }

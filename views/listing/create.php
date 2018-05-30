@@ -29,6 +29,15 @@ ActiveForm::end();
     <?= SortableGridView::widget([
         'dataProvider' => $listDataProvider,
         'layout' => "{pager}\n{items}\n{summary}\n",
+        'rowOptions' => function () {
+            {
+                return [
+                    'style' => 'cursor:move',
+                    'data-toggle' => 'tooltip',
+                    'title' => 'You could drag and drop rows to setup sorting inside the listing',
+                ];
+            }
+        },
         'summary' => '',
         'sortUrl' => Url::to(['sort']),
         'sortingPromptText' => 'Sorting...',

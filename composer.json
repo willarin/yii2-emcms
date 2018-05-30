@@ -24,7 +24,8 @@
         "dektrium/yii2-user": "*",
         "mihaildev/yii2-elfinder": "*",
         "dominus77/yii2-tinymce-widget": "~2.0",
-        "richardfan1126/yii2-sortable-gridview": "*"
+        "richardfan1126/yii2-sortable-gridview": "*",
+        "kartik-v/yii2-widget-select2": "@dev"
     },
     "autoload": {
         "psr-4": {

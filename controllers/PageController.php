@@ -12,6 +12,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use almeyda\emcms\models\Page;
+use almeyda\emcms\models\Listing;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\filters\AccessControl;
@@ -69,20 +70,35 @@ class PageController extends Controller
             ],
         ];
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, ['create', 'update', 'delete', 'list'])) {
+            $this->layout = $this->module->adminLayout;
+        }
+        return parent::beforeAction($action);
+    }
+    
     /**
      * Creates new Page
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $this->layout = $this->module->adminLayout;
         $model = new Page();
         $model->setScenario('create');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+            if (\Yii::$app->getRequest()->get('listingId')) {
+                $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+            } else {
+                $output = $this->redirect('list');
+            }
+    
         } else {
-            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
+            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates), 'selectData' => Listing::selectListings()]);
         }
         return $output;
     }
@@ -93,7 +109,6 @@ class PageController extends Controller
      */
     public function actionList()
     {
-        $this->layout = $this->module->adminLayout;
         $dataProvider = new ActiveDataProvider([
             'query' => Page::find(),
             'pagination' => [
@@ -136,13 +151,16 @@ class PageController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = $this->module->adminLayout;
         $model = Page::findOne($id);
         $model->setScenario('update');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+            if (\Yii::$app->getRequest()->get('listingId')) {
+                $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+            } else {
+                $output = $this->redirect('list');
+            }
         } else {
-            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates)]);
+            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates), 'selectData' => Listing::selectListings()]);
         }
         return $output;
     }
@@ -154,10 +172,13 @@ class PageController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->layout = $this->module->adminLayout;
         $model = Page::findOne($id);
         $model->delete();
-        $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+        if (\Yii::$app->getRequest()->get('listingId')) {
+            $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+        } else {
+            $output = $this->redirect('list');
+        }
         return $output;
     }
 }

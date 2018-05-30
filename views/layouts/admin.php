@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link https://almeyda.repositoryhosting.com/git_public/almeyda/yii2-emcms.git
+ * @copyright Copyright (c) 2018 Almeyda LLC
+ *
+ * The full copyright and license information is stored in the LICENSE file distributed with this source code.
+ */
 /* @var $this \yii\web\View */
 
 /* @var $content string */
@@ -27,8 +33,6 @@ BootstrapAsset::register($this);
 <?php
 if (!Yii::$app->user->isGuest) {
     NavBar::begin([
-        'brandLabel' => Yii::t('app', 'Dashboard'),
-        'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse',
         ],
@@ -39,6 +43,14 @@ if (!Yii::$app->user->isGuest) {
             ['label' => 'Sign out (' . Yii::$app->user->identity->username . ')', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']],
         ['label' => 'Settings', 'url' => ['/user/settings/account']],
     ];
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => Yii::$app->user->isGuest ? [] :
+            [
+                ['label' => Yii::t('app', 'Pages'), 'url' => ['/emcms']],
+                ['label' => Yii::t('app', 'Listings of pages'), 'url' => ['/emcms/listing']]
+            ]
+    ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,

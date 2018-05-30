@@ -9,7 +9,6 @@
 namespace almeyda\emcms\controllers;
 
 use almeyda\emcms\models\ListingPage;
-use almeyda\emcms\models\Page;
 use Yii;
 use yii\web\Controller;
 use almeyda\emcms\models\Listing;
@@ -101,11 +100,6 @@ class ListingController extends Controller
         $model->setScenario('update');
         $dataProvider = new ActiveDataProvider([
             'query' => $model->getPages(),
-            'pagination' => [
-                'defaultPageSize' => 10,
-                'pageSize' => 10,
-                'pageSizeLimit' => [1, 50],
-            ],
         ]);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $output = $this->redirect('list');
