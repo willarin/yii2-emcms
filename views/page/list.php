@@ -25,6 +25,18 @@ $this->title = Yii::t('app', 'List of pages'); ?>
         'title:ntext',
         'description:ntext',
         [
+            'attribute' => 'id',
+            'label' => Yii::t('app', 'Listing'),
+            'format' => 'raw',
+            'content' => function ($data) {
+                $result = '';
+                if (isset($data->listing)) {
+                    $result = '<a href="../listing/update?id=' . $data->listing->id . '">' . $data->listing->name . '</a>';
+                }
+                return $result;
+            }
+        ],
+        [
             'class' => 'yii\grid\ActionColumn',
             'contentOptions' => ['style' => 'width:70px;'],
             'template' => '{view} {update} {delete}',
