@@ -25,7 +25,7 @@ $this->title = Yii::t('app', 'List of pages'); ?>
         'title:ntext',
         'description:ntext',
         [
-            'attribute' => 'id',
+            'attribute' => 'listing_name',
             'label' => Yii::t('app', 'Listing'),
             'format' => 'raw',
             'content' => function ($data) {
