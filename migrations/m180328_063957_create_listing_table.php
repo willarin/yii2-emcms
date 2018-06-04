@@ -9,7 +9,8 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of basic tables.
+ * Handles the creation indexes and additional tables
+ * NOTE: temporary migration
  */
 class m180328_063957_create_listing_table extends Migration
 {

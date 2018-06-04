@@ -65,26 +65,45 @@ ActiveForm::end();
                 'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil" data-method="POST"></span>', ['page/update', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')]);
+                        return Html::a('<span class="glyphicon glyphicon-pencil" data-method="POST"></span>', [
+                            'page/update',
+                            'id' => $model->id,
+                            'listingId' => \Yii::$app->getRequest()->get('id')
+                        ]);
                     },
                     'view' => function ($url, $model) {
                         if (\Yii::$app->user->identity->isAdmin) {
-                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['@web/' . $model->route], ['target' => '_blank'
-                            ]);
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-eye-open"></span>',
+                                ['@web/' . $model->route],
+                                ['target' => '_blank']
+                            );
                         }
                     },
                     'delete' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['page/delete', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')], [
-                            'class' => '',
-                            'data' => [
-                                'confirm' => Yii::t('app', 'Are you absolutely sure? This action will remove page "' . $model->title . '"'),
-                                'method' => 'post',
-                            ],
-                        ]);
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-trash"></span>',
+                            ['page/delete', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')],
+                            [
+                                'class' => '',
+                                'data' => [
+                                    'confirm' => Yii::t(
+                                        'app',
+                                        'Are you absolutely sure? This action will remove page "' .
+                                        $model->title . '"'
+                                    ),
+                                    'method' => 'post',
+                                ],
+                            ]
+                        );
                     }
                 ]
             ],
         ],
-]);
-    echo Html::a(Yii::t('app', 'Add page'), ['page/create', 'listingId' => $model->id], ['class' => 'btn btn-primary', 'data' => ['method' => 'post']]); ?>
+    ]);
+    echo Html::a(
+        Yii::t('app', 'Add page'),
+        ['page/create', 'listingId' => $model->id],
+        ['class' => 'btn btn-primary', 'data' => ['method' => 'post']]
+    ); ?>
 <?php endif ?>

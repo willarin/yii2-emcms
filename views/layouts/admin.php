@@ -40,7 +40,11 @@ if (!Yii::$app->user->isGuest) {
     $menuItems = [
         Yii::$app->user->isGuest ?
             ['label' => 'Sign in', 'url' => ['/user/security/login']] :
-            ['label' => 'Sign out (' . Yii::$app->user->identity->username . ')', 'url' => ['/user/security/logout'], 'linkOptions' => ['data-method' => 'post']],
+            [
+                'label' => 'Sign out (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/user/security/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ],
         ['label' => 'Settings', 'url' => ['/user/settings/account']],
     ];
     echo Nav::widget([

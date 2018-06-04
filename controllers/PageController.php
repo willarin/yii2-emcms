@@ -96,9 +96,12 @@ class PageController extends Controller
             } else {
                 $output = $this->redirect('list');
             }
-    
         } else {
-            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates), 'selectData' => Listing::selectListings()]);
+            $output = $this->render('create', [
+                'model' => $model,
+                'templatesItems' => $model->FormMenuItems($this->module->cssTemplates),
+                'selectData' => Listing::selectListings()
+            ]);
         }
         return $output;
     }
@@ -124,6 +127,7 @@ class PageController extends Controller
     /**
      * Displays page by the given id
      * @param $id - id of page to load from database
+     * @return mixed
      */
     public function actionLoad($id)
     {
@@ -148,6 +152,7 @@ class PageController extends Controller
     /**
      * Updates data for the Page
      * @param $id - id of Page record
+     * @return mixed
      */
     public function actionUpdate($id)
     {
@@ -160,7 +165,11 @@ class PageController extends Controller
                 $output = $this->redirect('list');
             }
         } else {
-            $output = $this->render('create', ['model' => $model, 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates), 'selectData' => Listing::selectListings()]);
+            $output = $this->render('create', [
+                'model' => $model,
+                'templatesItems' => $model->FormMenuItems($this->module->cssTemplates),
+                'selectData' => Listing::selectListings()
+            ]);
         }
         return $output;
     }

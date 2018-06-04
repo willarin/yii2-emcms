@@ -10,6 +10,10 @@ namespace almeyda\emcms\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * Class ListingPage
+ * @package almeyda\emcms\models
+ */
 class ListingPage extends ActiveRecord
 {
     /**

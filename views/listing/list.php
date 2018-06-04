@@ -34,13 +34,20 @@ $this->title = Yii::t('app', 'Page listings'); ?>
             'template' => '{update} {delete}',
             'buttons' => [
                 'update' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil" data-method="POST"></span>', ['update', 'id' => $model->id]);
+                    return Html::a(
+                        '<span class="glyphicon glyphicon-pencil" data-method="POST"></span>',
+                        ['update', 'id' => $model->id]
+                    );
                 },
                 'delete' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                         'class' => '',
                         'data' => [
-                            'confirm' => Yii::t('app', 'Are you absolutely sure ? You will lose all the information about listing "' . $model->name . '" and linked pages'),
+                            'confirm' => Yii::t(
+                                'app',
+                                'Are you absolutely sure ? You will lose all the information about listing "' .
+                                $model->name . '" and linked pages'
+                            ),
                             'method' => 'post',
                         ],
                     ]);

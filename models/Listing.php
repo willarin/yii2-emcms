@@ -11,6 +11,10 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
 
+/**
+ * Class Listing
+ * @package almeyda\emcms\models
+ */
 class Listing extends ActiveRecord
 {
     

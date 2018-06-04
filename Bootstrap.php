@@ -45,7 +45,11 @@ class Bootstrap implements BootstrapInterface
                     ];
                     $pages = Page::find()->all();
                     foreach ($pages as $page) {
-                        $rulesToAdd[str_replace('/', '', $page['route'])] = array('pattern' => $page['route'], 'route' => 'emcms/page/load', 'defaults' => ['id' => $page['id']]);
+                        $rulesToAdd[str_replace('/', '', $page['route'])] = array(
+                            'pattern' => $page['route'],
+                            'route' => 'emcms/page/load',
+                            'defaults' => ['id' => $page['id']]
+                        );
                     }
                     $app->getUrlManager()->addRules($rulesToAdd, false);
                 }
