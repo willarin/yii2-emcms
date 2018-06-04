@@ -26,30 +26,39 @@ ActiveForm::end();
 ?>
 <?php if (isset($listDataProvider)): ?>
     <H1 class="text-center">List of pages</H1>
+    <?php $tooltipOptions = [
+        'style' => 'cursor:move',
+        'data-toggle' => 'tooltip',
+        'title' => 'You could drag and drop rows to setup sorting inside the listing'
+    ]; ?>
     <?= SortableGridView::widget([
         'dataProvider' => $listDataProvider,
         'layout' => "{pager}\n{items}\n{summary}\n",
-        'rowOptions' => function () {
-            {
-                return [
-                    'style' => 'cursor:move',
-                    'data-toggle' => 'tooltip',
-                    'title' => 'You could drag and drop rows to setup sorting inside the listing',
-                ];
-            }
-        },
         'summary' => '',
         'sortUrl' => Url::to(['sort']),
         'sortingPromptText' => 'Sorting...',
         'columns' => [
-            'id',
+            [
+                'attribute' => 'id',
+                'format' => 'raw',
+                'contentOptions' => $tooltipOptions,
+            ],
             [
                 'attribute' => 'route',
                 'format' => 'raw',
-                'label' => Yii::t('app', 'Route')
+                'label' => Yii::t('app', 'Route'),
+                'contentOptions' => $tooltipOptions,
             ],
-            'title:ntext',
-            'description:ntext',
+            [
+                'attribute' => 'title',
+                'format' => 'ntext',
+                'contentOptions' => $tooltipOptions
+            ],
+            [
+                'attribute' => 'description',
+                'format' => 'ntext',
+                'contentOptions' => $tooltipOptions
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'contentOptions' => ['style' => 'width:70px;'],
