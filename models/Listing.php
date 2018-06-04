@@ -94,7 +94,7 @@ class Listing extends ActiveRecord
      * Method that returns indexed array of listings to display in select
      * @return array
      */
-    public function selectListings()
+    public static function selectListings()
     {
         $result = [];
         $listings = Listing::find()->all();
