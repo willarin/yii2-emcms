@@ -58,18 +58,6 @@ class PageController extends Controller
             ];
         return $behaviors;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions()
-    {
-        return [
-            'page' => [
-                'class' => 'almeyda\emcms\web\ViewAction',
-            ],
-        ];
-    }
     
     /**
      * {@inheritdoc}
