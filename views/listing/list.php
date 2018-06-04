@@ -40,7 +40,7 @@ $this->title = Yii::t('app', 'Page listings'); ?>
                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
                         'class' => '',
                         'data' => [
-                            'confirm' => Yii::t('app', 'Are you absolutely sure ? You will lose all the information about listing "' . $model->name . '"and its pages'),
+                            'confirm' => Yii::t('app', 'Are you absolutely sure ? You will lose all the information about listing "' . $model->name . '" and linked pages'),
                             'method' => 'post',
                         ],
                     ]);
