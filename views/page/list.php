@@ -31,7 +31,7 @@ $this->title = Yii::t('app', 'List of pages'); ?>
             'content' => function ($data) {
                 $result = '';
                 if (isset($data->listing)) {
-                    $result = '<a href="../listing/update?id=' . $data->listing->id . '">' . $data->listing->name . '</a>';
+                    $result = Html::a($data->listing->name, ['listing/update', 'id' => $data->listing->id]);
                 }
                 return $result;
             }
