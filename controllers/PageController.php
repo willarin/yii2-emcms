@@ -101,13 +101,17 @@ class PageController extends Controller
     public function actionList()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Page::find(),
+            'query' => Page::find()->joinWith('listing'),
             'pagination' => [
                 'defaultPageSize' => 10,
                 'pageSize' => 10,
                 'pageSizeLimit' => [1, 50],
             ],
         ]);
+        $dataProvider->sort->attributes['listing_name'] = [
+            'asc' => ['listing.name' => SORT_ASC],
+            'desc' => ['listing.name' => SORT_DESC],
+        ];
         $output = $this->render('list', ['listDataProvider' => $dataProvider]);
         return $output;
     }
