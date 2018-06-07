@@ -13,6 +13,7 @@ use yii\base\BootstrapInterface;
 use dektrium\user\Bootstrap as UserBootstrap;
 use yii\base\InvalidConfigException;
 use almeyda\emcms\models\Page;
+use almeyda\emcms\models\Listing;
 use yii\web\Application as WebApplication;
 
 /**
@@ -49,6 +50,14 @@ class Bootstrap implements BootstrapInterface
                             'pattern' => $page['route'],
                             'route' => 'emcms/page/load',
                             'defaults' => ['id' => $page['id']]
+                        );
+                    }
+                    $listings = Listing::find()->all();
+                    foreach ($listings as $listing) {
+                        $rulesToAdd[$listing['name']] = array(
+                            'pattern' => $listing['name'],
+                            'route' => 'emcms/listing/view',
+                            'defaults' => ['id' => $listing['id']]
                         );
                     }
                     $app->getUrlManager()->addRules($rulesToAdd, false);

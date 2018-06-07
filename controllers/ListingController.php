@@ -31,7 +31,11 @@ class ListingController extends Controller
      */
     public function beforeAction($action)
     {
-        $this->layout = $this->module->adminLayout;
+        if ($action->id != 'view') {
+            $this->layout = $this->module->adminLayout;
+        } else {
+            $this->layout = $this->module->customLayout;
+        }
         return parent::beforeAction($action);
     }
     
@@ -139,5 +143,19 @@ class ListingController extends Controller
                 ]);
             }
         }
+    }
+    
+    /**
+     * Method shows base view for the listing
+     * @param $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        $model = new Listing();
+        $model->id = $id;
+        $model->refresh();
+        $output = $this->render('view', ['model' => $model, 'pagesList' => $model->pages]);
+        return $output;
     }
 }

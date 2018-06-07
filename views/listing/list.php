@@ -30,14 +30,23 @@ $this->title = Yii::t('app', 'Page listings'); ?>
         ],
         [
             'class' => 'yii\grid\ActionColumn',
-            'contentOptions' => ['style' => 'width:49px;'],
-            'template' => '{update} {delete}',
+            'contentOptions' => ['style' => 'width:67px;'],
+            'template' => '{update} {view} {delete}',
             'buttons' => [
                 'update' => function ($url, $model) {
                     return Html::a(
                         '<span class="glyphicon glyphicon-pencil" data-method="POST"></span>',
                         ['update', 'id' => $model->id]
                     );
+                },
+                'view' => function ($url, $model) {
+                    if (\Yii::$app->user->identity->isAdmin) {
+                        return Html::a(
+                            '<span class="glyphicon glyphicon-eye-open"></span>',
+                            ['@web/' . $model->name],
+                            ['target' => '_blank']
+                        );
+                    }
                 },
                 'delete' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
