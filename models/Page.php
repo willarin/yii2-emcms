@@ -11,6 +11,7 @@ namespace almeyda\emcms\models;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class Page
@@ -27,14 +28,16 @@ class Page extends ActiveRecord
             'routeUnique' => [
                 'route',
                 'unique',
-                'message' => \Yii::t('app', 'Route has been already taken'), 'on' => ['create', 'update']
+                'message' => \Yii::t('app', 'Route has been already taken'),
+                'on' => ['create', 'update']
             ],
             'titleUnique' => [
                 'title',
                 'unique',
-                'message' => \Yii::t('app', 'Title must be unique'), 'on' => ['create', 'update']
+                'message' => \Yii::t('app', 'Title must be unique'),
+                'on' => ['create', 'update']
             ],
-            'fieldsRequired' => [['route', 'title', 'content', 'description'], 'required', 'on' => ['create', 'update']],
+            'fieldsRequired' => [['pageType', 'route', 'title', 'content'], 'required', 'on' => ['create', 'update']],
             'urlPathValid' => [['route'], 'match', 'pattern' => '/^([\w-])([\/\w \.-]*)*\/?$/'],
             'idRequired' => [['id'], 'required', 'except' => 'create'],
             'routeMax' => ['route', 'string', 'min' => 1, 'max' => 256],
@@ -75,15 +78,15 @@ class Page extends ActiveRecord
         }
         parent::afterSave($insert, $changedAttributes);
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['create'] = ['route', 'title', 'content', 'description'];
-        $scenarios['update'] = ['route', 'title', 'content', 'description', 'id'];
+        $scenarios['create'] = ['route', 'title', 'content', 'description', 'isMenu', 'pageType', 'hidden', 'headerHtml', 'footerHtml', 'parentId', 'sort'];
+        $scenarios['update'] = ArrayHelper::merge($scenarios['create'], ['id']);
         return $scenarios;
     }
 
@@ -146,12 +149,81 @@ class Page extends ActiveRecord
         }
         return $menuItems;
     }
-    
+
     /**
-     * @return \yii\db\ActiveQuery
+     * @param bool $exclidedParentId
+     * @return array
+     */
+    public function getPages($exclidedParentId = false)
+    {
+        $query = self::find()->where(['pageType' => 'page']);
+        if ($exclidedParentId) {
+            $query->andWhere(['NOT IN', 'id', is_array($exclidedParentId) ? $exclidedParentId : [$exclidedParentId]]);
+        }
+        $query->orderBy(['sort' => SORT_ASC, 'title' => SORT_ASC]);
+        return $query->asArray()->all();
+    }
+
+    /**
+     * @param $route
+     * @return array|ActiveRecord[]
+     */
+    public function getPageByRoute($route)
+    {
+        $query = self::find()->where(['route' => $route]);
+        return $query->one();
+    }
+
+    /**
+     * @return array|ActiveRecord[]
+     */
+    public function getChildren()
+    {
+        $query = self::find()->where(['parentId' => $this->id]);
+        $query->orderBy(['sort' => SORT_ASC, 'title' => SORT_ASC]);
+        return $query->all();
+    }
+
+    /**
+     * @return $this
+     * @throws \yii\base\InvalidConfigException
      */
     public function getListing()
     {
         return $this->hasOne(Listing::class, ['id' => 'listingId'])->viaTable('listing_page', ['pageId' => 'id']);
     }
+
+    /**
+     * @return mixed
+     */
+    public function renderContent()
+    {
+        $result = $this->content;
+        preg_match_all(
+            '/\#\#(.+?)\#\#/i',
+            $result,
+            $matches,
+            PREG_PATTERN_ORDER
+        );
+
+        if (isset($matches[0])) {
+            foreach ($matches[0] as $key => $match) {
+                $section = $this->getPageByRoute(str_replace('#', '', $match));
+                $content = ($section) ? $section->content : '';
+                $result = str_replace($match, $content, $result);
+
+                //replace trash <p> tags at the beginning and at the end
+                $expressions = ['/^(\<p\>)/i', '/(\<\/p\>)$/i'];
+                foreach($expressions as $expression) {
+                    while (preg_match($expression, $result)) {
+                        $result = preg_replace($expressions, "", $result);
+                    }
+                }
+
+
+            }
+        }
+        return $result;
+    }
+
 }

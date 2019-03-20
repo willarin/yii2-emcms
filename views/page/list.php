@@ -17,6 +17,7 @@ $this->title = Yii::t('app', 'List of pages'); ?>
     'summary' => '',
     'columns' => [
         'id',
+        'pageType:ntext',
         [
             'attribute' => 'route',
             'format' => 'raw',

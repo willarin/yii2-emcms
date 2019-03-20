@@ -65,7 +65,7 @@ return [
                 ...
                 ...
                 ...
-                'emcms" =>  [
+                'emcms' =>  [
                         'pattern' => '<view>',
                         'route' => 'emcms/page/page',
                         'defaults' => ['view' => 'index'],
@@ -280,7 +280,7 @@ If you want to create page with address `yourhost/faq`  you could follow the nex
 
 ## License
 
-Please take a look on the bundled [LICENSE.md](LICENSE.md) for details.
+Please, take a look at the bundled [LICENSE.md](LICENSE.md) for details.
 
 
 

@@ -72,7 +72,7 @@ class Bootstrap implements BootstrapInterface
                 $user = new UserBootstrap();
                 $user->bootstrap($app);
                 \yii\base\Event::on(
-                    \dektrium\user\controllers\SecurityController::className(),
+                    \dektrium\user\controllers\SecurityController::class,
                     \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGIN,
                     function () {
                         Yii::$app->response->redirect(array('/emcms'))->send();
@@ -80,7 +80,7 @@ class Bootstrap implements BootstrapInterface
                     }
                 );
                 \yii\base\Event::on(
-                    \dektrium\user\controllers\SecurityController::className(),
+                    \dektrium\user\controllers\SecurityController::class,
                     \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGOUT,
                     function () {
                         Yii::$app->response->redirect(array('/user/login'))->send();

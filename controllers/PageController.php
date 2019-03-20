@@ -47,7 +47,7 @@ class PageController extends Controller
         }
         $behaviors['access'] =
             [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['create', 'update', 'list', 'delete'],
                 'rules' => [
                     [
