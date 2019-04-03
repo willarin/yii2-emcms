@@ -96,15 +96,18 @@ $provider = new \yii\data\ArrayDataProvider([
             "insertdatetime media table contextmenu paste"
         ],
         'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | csstemplates",
+        'valid_elements' => '*[*]',
+        'extended_valid_elements' => "*[*]",
+        'forced_root_block' => false,
         'image_advtab' => true,
         'menubar' => false,
         'setup' => new JsExpression("function(editor) {
-        editor.addButton('csstemplates', {
-          type: 'menubutton',
-          text: '" . Yii::t('app', 'Select template') . "',
-          menu: [" . $templatesItems . "]
-        });
-      }")
+          editor.addButton('csstemplates', {
+            type: 'menubutton',
+            text: '" . Yii::t('app', 'Select template') . "',
+            menu: [" . $templatesItems . "]
+          });
+        }")
     ],
     'fileManager' => [
         'class' => MihaildevElFinder::class,

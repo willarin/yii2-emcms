@@ -38,7 +38,7 @@ class Page extends ActiveRecord
                 'on' => ['create', 'update']
             ],
             'fieldsRequired' => [['pageType', 'route', 'title', 'content'], 'required', 'on' => ['create', 'update']],
-            'urlPathValid' => [['route'], 'match', 'pattern' => '/^([\w-])([\/\w \.-]*)*\/?$/'],
+            'urlPathValid' => [['route'], 'match', 'pattern' => '/^|\/([\w-])([\/\w \.-]*)*\/?$/'],
             'idRequired' => [['id'], 'required', 'except' => 'create'],
             'routeMax' => ['route', 'string', 'min' => 1, 'max' => 256],
             'titleMax' => ['title', 'string', 'min' => 1, 'max' => 300],
@@ -199,6 +199,8 @@ class Page extends ActiveRecord
     public function renderContent()
     {
         $result = $this->content;
+
+        //include content
         preg_match_all(
             '/\#\#(.+?)\#\#/i',
             $result,
@@ -210,6 +212,20 @@ class Page extends ActiveRecord
             foreach ($matches[0] as $key => $match) {
                 $section = $this->getPageByRoute(str_replace('#', '', $match));
                 $content = ($section) ? $section->content : '';
+
+                //execute php
+                preg_match_all(
+                    '/\#\#exec(.+?)\#\#/i',
+                    $content,
+                    $contentMatches
+                );
+                if (isset($contentMatches[0])) {
+                    foreach ($contentMatches[0] as $key => $contentMatch) {
+                        eval('$res' . ' = ' . html_entity_decode(str_replace(['##exec','##'], '', $contentMatch)));
+                        $content = str_replace($contentMatch, $res, $content);
+                    }
+                }
+
                 $result = str_replace($match, $content, $result);
 
                 //replace trash <p> tags at the beginning and at the end
