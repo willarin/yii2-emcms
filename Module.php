@@ -24,6 +24,13 @@ class Module extends \yii\base\Module
     public $adminLayout = 'admin';
     public $imagePath = 'images';
     public $cssTemplates = [];
+    public $config = [
+        'pagination' => [
+            'defaultPageSize' => 10,
+            'pageSize' => 10,
+            'pageSizeLimit' => [1, 50],
+        ],
+    ];
 
     public function init()
     {

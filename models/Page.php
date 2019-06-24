@@ -194,51 +194,55 @@ class Page extends ActiveRecord
     }
 
     /**
-     * @return mixed
+     * render content
+     * @param $content
+     * @return mixed|null|string|string[]
      */
-    public function renderContent()
+    public function renderContent($content, $i = 0)
     {
-        $result = $this->content;
+        $result = $content;
 
         //include content
         preg_match_all(
-            '/\#\#(.+?)\#\#/i',
+            "/\#\#(?!exec)(.+?)\#\#/i",
             $result,
             $matches,
             PREG_PATTERN_ORDER
         );
 
-        if (isset($matches[0])) {
+        if (isset($matches[0]) && count($matches[0])) {
             foreach ($matches[0] as $key => $match) {
                 $section = $this->getPageByRoute(str_replace('#', '', $match));
                 $content = ($section) ? $section->content : '';
-
-                //execute php
-                preg_match_all(
-                    '/\#\#exec(.+?)\#\#/i',
-                    $content,
-                    $contentMatches
-                );
-                if (isset($contentMatches[0])) {
-                    foreach ($contentMatches[0] as $key => $contentMatch) {
-                        eval('$res' . ' = ' . html_entity_decode(str_replace(['##exec','##'], '', $contentMatch)));
-                        $content = str_replace($contentMatch, $res, $content);
-                    }
-                }
-
                 $result = str_replace($match, $content, $result);
+            }
 
-                //replace trash <p> tags at the beginning and at the end
-                $expressions = ['/^(\<p\>)/i', '/(\<\/p\>)$/i'];
-                foreach($expressions as $expression) {
-                    while (preg_match($expression, $result)) {
-                        $result = preg_replace($expressions, "", $result);
-                    }
-                }
+            $result = $this->renderContent($result, ++$i);
+        }
 
-
+        //execute php
+        preg_match_all(
+            '/\#\#exec(.+?)\#\#/i',
+            $result,
+            $contentMatches
+        );
+        if (isset($contentMatches[0]) && count($contentMatches[0])) {
+            foreach ($contentMatches[0] as $key => $contentMatch) {
+                eval('$res' . ' = ' . html_entity_decode(str_replace(['##exec', '##'], '', $contentMatch)));
+                $result = str_replace($contentMatch, $res, $result);
             }
         }
+
+
+        //replace trash <p> tags at the beginning and at the end
+        $expressions = ['/^(\<p\>)/i', '/(\<\/p\>)$/i'];
+        foreach ($expressions as $expression) {
+            while (preg_match($expression, $result)) {
+                $result = preg_replace($expressions, "", $result);
+            }
+        }
+
+
         return $result;
     }
 

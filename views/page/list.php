@@ -11,6 +11,7 @@ BootstrapAsset::register($this);
 
 $this->title = Yii::t('app', 'List of pages'); ?>
     <H1 class="text-center">List of pages</H1>
+<?= Html::a(Yii::t('app', 'Add page'), ['create'], ['class' => 'btn btn-primary']) ?>
 <?= GridView::widget([
     'dataProvider' => $listDataProvider,
     'layout' => "{pager}\n{items}\n{summary}\n",
@@ -47,7 +48,8 @@ $this->title = Yii::t('app', 'List of pages'); ?>
                 },
                 'view' => function ($url, $model) {
                     if (\Yii::$app->user->identity->isAdmin) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['@web/' . $model->route], ['target' => '_blank'
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['@web/' . $model->route], [
+                            'target' => '_blank'
                         ]);
                     }
                 },

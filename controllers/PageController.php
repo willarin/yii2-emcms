@@ -102,11 +102,7 @@ class PageController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Page::find()->joinWith('listing'),
-            'pagination' => [
-                'defaultPageSize' => 10,
-                'pageSize' => 10,
-                'pageSizeLimit' => [1, 50],
-            ],
+            'pagination' => $this->module->config['pagination'],
         ]);
         $dataProvider->sort->attributes['listing_name'] = [
             'asc' => ['listing.name' => SORT_ASC],

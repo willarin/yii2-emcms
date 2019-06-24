@@ -83,11 +83,7 @@ class ListingController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Listing::find(),
-            'pagination' => [
-                'defaultPageSize' => 10,
-                'pageSize' => 10,
-                'pageSizeLimit' => [1, 50],
-            ],
+            'pagination' => $this->module->config['pagination'],
         ]);
         $output = $this->render('list', ['listDataProvider' => $dataProvider]);
         return $output;

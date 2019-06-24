@@ -5,6 +5,6 @@ if ($model->pageType == 'page') {
 
     $this->registerMetaTag(['name' => 'description', 'content' => $model->description]);
 }
-echo $model->renderContent();
+echo $model->renderContent($model->content);
 
 echo $model->footerHtml;
