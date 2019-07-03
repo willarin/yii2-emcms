@@ -68,14 +68,15 @@ class Bootstrap implements BootstrapInterface
             }
             if (!$app->hasModule('user')) {
                 $user_config = $app->getModule('emcms/user');
+
                 $app->setModules(['user' => $user_config]);
                 $user = new UserBootstrap();
                 $user->bootstrap($app);
                 \yii\base\Event::on(
                     \dektrium\user\controllers\SecurityController::class,
                     \dektrium\user\controllers\SecurityController::EVENT_AFTER_LOGIN,
-                    function () {
-                        Yii::$app->response->redirect(array('/emcms'))->send();
+                    function () use ($user_config) {
+                        Yii::$app->response->redirect(array(isset($user_config->params['afterLoginUrl']) ? $user_config->params['afterLoginUrl'] : '/emcms'))->send();
                         Yii::$app->end();
                     }
                 );
