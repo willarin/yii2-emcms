@@ -36,7 +36,7 @@ class Listing extends ActiveRecord
             'nameMax' => ['route', 'string', 'min' => 1, 'max' => 256],
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -51,7 +51,7 @@ class Listing extends ActiveRecord
             ],
         ];
     }
-
+    
     /**
      * Unlink Pages and delete associated ListingPage records
      */
@@ -67,7 +67,7 @@ class Listing extends ActiveRecord
     public function getPages()
     {
         return $this->hasMany(Page::class, ['id' => 'pageId'])->viaTable('listing_page', ['listingId' => 'id'])
-            ->leftJoin('listing_page lp', 'lp.pageId = page.id')->orderBy(['lp.sort' => SORT_ASC]);
+            ->leftJoin('listing_page lp', 'lp."pageId" = page."id"')->orderBy(['lp.sort' => SORT_ASC]);
     }
     
     /**
@@ -80,7 +80,7 @@ class Listing extends ActiveRecord
         $scenarios['update'] = ['name', 'id'];
         return $scenarios;
     }
-
+    
     /**
      * @return array - zero-based array of Page id's from the listing
      */
