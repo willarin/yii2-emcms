@@ -23,6 +23,7 @@ class Module extends \yii\base\Module
     public $defaultRoute = 'page';
     public $adminLayout = 'admin';
     public $imagePath = 'images';
+    public $uploadPath = false;
     public $cssTemplates = [];
     public $config = [
         'pagination' => [
@@ -44,11 +45,16 @@ class Module extends \yii\base\Module
                     [
                         'baseUrl' => '@web',
                         'basePath' => '@webroot',
-                        'path' => $this->imagePath,
+                        'path' => \Yii::getAlias($this->imagePath),
                         'name' => 'images'
                     ],
                 ],
             ]
         ];
+    }
+    
+    public function getUploadPath()
+    {
+        return $this->basePath . $this->uploadPath ? $this->uploadPath : '/uploads';
     }
 }

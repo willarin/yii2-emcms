@@ -17,10 +17,49 @@ use \yii\helpers\ArrayHelper;
 
 BootstrapAsset::register($this);
 
-$this->title = Yii::t('user', $model->scenario == 'create' ? 'Create page' : 'Update page'); ?>
+$this->title = Yii::t('user', $model->scenario == 'create' ? 'Create page' : 'Update page');
+
+$tinyMceOptions = [
+    'options' => ['rows' => 6],
+    'language' => 'en',
+    'clientOptions' => [
+        'plugins' => [
+            "advlist autolink lists link charmap anchor image imagetools",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table contextmenu paste"
+        ],
+        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | csstemplates",
+        'valid_elements' => '*[*]',
+        'extended_valid_elements' => "*[*]",
+        'forced_root_block' => false,
+        'image_advtab' => true,
+        'menubar' => false,
+        'setup' => new JsExpression("function(editor) {
+          editor.addButton('csstemplates', {
+            type: 'menubutton',
+            text: '" . Yii::t('app', 'Select template') . "',
+            menu: [" . $templatesItems . "]
+          });
+        }")
+    ],
+    'fileManager' => [
+        'class' => MihaildevElFinder::class,
+        'controller' => 'emcms/elfinder',
+        'title' => 'File manager',
+        'width' => 900,
+        'height' => 600,
+        'resizable' => 'yes'
+    ],
+];
+?>
 <H1 class="text-center"><?= $model->scenario == 'create' ? 'Page creation' : 'Page updating' ?></H1>
 
-<?php $form = ActiveForm::begin(['class' => 'create-form']); ?>
+<?php $form = ActiveForm::begin([
+    'class' => 'create-form',
+    'options' => [
+        'enctype' => 'multipart/form-data'
+    ],
+]); ?>
 
 <?= $form->field($model, 'pageType')->widget(Select2::class, [
     'options' =>
@@ -79,45 +118,23 @@ $provider = new \yii\data\ArrayDataProvider([
 
 <?= $form->field($model, 'route')->input('text',
     ['placeholder' => Yii::t('app', 'Enter route')])->label(Yii::t('app', 'Route')); ?>
+
 <?= $form->field($model,
     'title')->textInput(['placeholder' => Yii::t('app', 'Enter title')])->label(Yii::t('app', 'Title')); ?>
-<?= $form->field($model,
-    'description')->textInput(['placeholder' => Yii::t('app', 'Enter description')])->label(Yii::t('app', 'Description')); ?>
+
+<?= $form->field($model, 'description')->widget(TinyMce::class, $tinyMceOptions); ?>
 
 <?= $form->field($model, 'headerHtml')->textarea(['rows' => 5]) ?>
 
-<?= $form->field($model, 'content')->widget(TinyMce::class, [
-    'options' => ['rows' => 6],
-    'language' => 'en',
-    'clientOptions' => [
-        'plugins' => [
-            "advlist autolink lists link charmap anchor image imagetools",
-            "searchreplace visualblocks code fullscreen",
-            "insertdatetime media table contextmenu paste"
-        ],
-        'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image code | csstemplates",
-        'valid_elements' => '*[*]',
-        'extended_valid_elements' => "*[*]",
-        'forced_root_block' => false,
-        'image_advtab' => true,
-        'menubar' => false,
-        'setup' => new JsExpression("function(editor) {
-          editor.addButton('csstemplates', {
-            type: 'menubutton',
-            text: '" . Yii::t('app', 'Select template') . "',
-            menu: [" . $templatesItems . "]
-          });
-        }")
-    ],
-    'fileManager' => [
-        'class' => MihaildevElFinder::class,
-        'controller' => 'emcms/elfinder',
-        'title' => 'File manager',
-        'width' => 900,
-        'height' => 600,
-        'resizable' => 'yes'
-    ],
-]); ?>
+<?= $form->field($model, 'content')->widget(TinyMce::class, $tinyMceOptions); ?>
+
+<div><label>Image</label></div>
+<?php
+    if ($model->image) {
+        echo Html::img($model->getPublishedImage(), ['style' => 'max-height:100px']);
+    }
+?>
+<?= $form->field($model, 'image')->fileInput()->label(false) ?>
 
 <?= $form->field($model, 'footerHtml')->textarea(['rows' => 5]) ?>
 

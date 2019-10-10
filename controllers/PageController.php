@@ -16,6 +16,7 @@ use almeyda\emcms\models\Listing;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\filters\AccessControl;
+use yii\web\UploadedFile;
 
 /**
  * Controller contains all actions to manipulate pages at the admin side and render at the client side.
@@ -74,17 +75,38 @@ class PageController extends Controller
      * Creates new Page
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
+    public function actionCreate($id = 0)
     {
-        $model = new Page();
-        $model->setScenario('create');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (\Yii::$app->getRequest()->get('listingId')) {
-                $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
-            } else {
-                $output = $this->redirect('list');
-            }
+        if ($id) {
+            $model = Page::findOne($id);
+            $model->setScenario('update');
         } else {
+            $model = new Page();
+            $model->setScenario('create');
+        }
+
+        $result = true;
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            //upload image
+            $uploadedFile = UploadedFile::getInstance($model, 'image');
+            if ($uploadedFile) {
+                $model->image = $uploadedFile;
+                $fileName = md5(uniqid()) . '_' . $model->image->baseName . '.' . $model->image->extension;
+                $model->image->saveAs($this->module->getUploadPath() . DIRECTORY_SEPARATOR . $fileName);
+                $model->image->name = $fileName;
+            }
+            if ($model->save()) {
+                $result = true;
+                if (\Yii::$app->getRequest()->get('listingId')) {
+                    $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
+                } else {
+                    $output = $this->redirect('list');
+                }
+            } else {
+                $result = false;
+            }
+        }
+        if ($result) {
             $output = $this->render('create', [
                 'model' => $model,
                 'templatesItems' => $model->FormMenuItems($this->module->cssTemplates),
@@ -92,6 +114,16 @@ class PageController extends Controller
             ]);
         }
         return $output;
+    }
+
+    /**
+     * Updates data for the Page
+     * @param $id - id of Page record
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        return $this->runAction('create', ['id' => $id]);
     }
 
     /**
@@ -133,31 +165,6 @@ class PageController extends Controller
                     Yii::t('yii', 'Page not found.')
                 );
             }
-        }
-        return $output;
-    }
-
-    /**
-     * Updates data for the Page
-     * @param $id - id of Page record
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = Page::findOne($id);
-        $model->setScenario('update');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (\Yii::$app->getRequest()->get('listingId')) {
-                $output = $this->redirect('../listing/update?id=' . \Yii::$app->getRequest()->get('listingId'));
-            } else {
-                $output = $this->redirect('list');
-            }
-        } else {
-            $output = $this->render('create', [
-                'model' => $model,
-                'templatesItems' => $model->FormMenuItems($this->module->cssTemplates),
-                'selectData' => Listing::selectListings()
-            ]);
         }
         return $output;
     }

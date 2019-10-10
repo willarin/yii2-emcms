@@ -42,6 +42,7 @@ class Page extends ActiveRecord
             'idRequired' => [['id'], 'required', 'except' => 'create'],
             'routeMax' => ['route', 'string', 'min' => 1, 'max' => 256],
             'titleMax' => ['title', 'string', 'min' => 1, 'max' => 300],
+            'uploadedImage' => [['image'], 'file', 'skipOnEmpty' => false, 'extensions' => 'gif, jpg, png',],
         ];
     }
 
@@ -246,4 +247,36 @@ class Page extends ActiveRecord
         return $result;
     }
 
+    /**
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getPublishedImage()
+    {
+        $result = '';
+        $imgPath = \Yii::$app->getModules()['emcms']->getUploadPath() . DIRECTORY_SEPARATOR . $this->image;
+        if (file_exists(\Yii::getAlias('@webroot') . $imgPath)) {
+            $result = $imgPath;
+        }
+        return $result;
+    }
+
+    /**
+     * get post category
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCategory()
+    {
+        return $this->hasOne(PageCategory::class, ['id' => 'categoryId']);
+    }
+
+    /**
+     * get post category name
+     * @return string
+     */
+    public function getCategoryName()
+    {
+        $category = $this->getCategory()->one();
+        return $category ? $category->name : '';
+    }
 }

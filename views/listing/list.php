@@ -35,21 +35,21 @@ $this->title = Yii::t('app', 'Page listings'); ?>
             'buttons' => [
                 'update' => function ($url, $model) {
                     return Html::a(
-                        '<span class="glyphicon glyphicon-pencil" data-method="POST"></span>',
+                        'Edit',
                         ['update', 'id' => $model->id]
                     );
                 },
                 'view' => function ($url, $model) {
                     if (\Yii::$app->user->identity->isAdmin) {
                         return Html::a(
-                            '<span class="glyphicon glyphicon-eye-open"></span>',
+                            'Open',
                             ['@web/' . $model->name],
                             ['target' => '_blank']
                         );
                     }
                 },
                 'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                    return Html::a('Delete', ['delete', 'id' => $model->id], [
                         'class' => '',
                         'data' => [
                             'confirm' => Yii::t(

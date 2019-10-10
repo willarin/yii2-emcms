@@ -44,17 +44,17 @@ $this->title = Yii::t('app', 'List of pages'); ?>
             'template' => '{view} {update} {delete}',
             'buttons' => [
                 'update' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-pencil" data-method="POST"></span>', ['update', 'id' => $model->id]);
+                    return Html::a('Edit', ['update', 'id' => $model->id]);
                 },
                 'view' => function ($url, $model) {
                     if (\Yii::$app->user->identity->isAdmin) {
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['@web/' . $model->route], [
+                        return Html::a('Open', ['@web/' . $model->route], [
                             'target' => '_blank'
                         ]);
                     }
                 },
                 'delete' => function ($url, $model) {
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['delete', 'id' => $model->id], [
+                    return Html::a('Delete', ['delete', 'id' => $model->id], [
                         'class' => '',
                         'data' => [
                             'confirm' => Yii::t('app', 'Are you absolutely sure ? You will lose all the information about page "' . $model->title . '"'),

@@ -18,7 +18,7 @@ class m190319_064313_create_ismenu_ispage_fields extends Migration
         $this->addColumn('page', 'hidden', $this->boolean()->defaultValue(false)->notNull());
         $this->addColumn('page', 'headerHtml', $this->text()->null());
         $this->addColumn('page', 'footerHtml', $this->text()->null());
-        $this->addColumn('page', 'sort', $this->int()->null());
+        $this->addColumn('page', 'sort', $this->integer()->null());
 
         $this->createIndex('idx_page_parentId', 'page', ['parentId']);
     }

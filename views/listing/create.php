@@ -65,7 +65,7 @@ ActiveForm::end();
                 'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-pencil" data-method="POST"></span>', [
+                        return Html::a('Edit', [
                             'page/update',
                             'id' => $model->id,
                             'listingId' => \Yii::$app->getRequest()->get('id')
@@ -74,7 +74,7 @@ ActiveForm::end();
                     'view' => function ($url, $model) {
                         if (\Yii::$app->user->identity->isAdmin) {
                             return Html::a(
-                                '<span class="glyphicon glyphicon-eye-open"></span>',
+                                'Open',
                                 ['@web/' . $model->route],
                                 ['target' => '_blank']
                             );
@@ -82,7 +82,7 @@ ActiveForm::end();
                     },
                     'delete' => function ($url, $model) {
                         return Html::a(
-                            '<span class="glyphicon glyphicon-trash"></span>',
+                            'Delete',
                             ['page/delete', 'id' => $model->id, 'listingId' => \Yii::$app->getRequest()->get('id')],
                             [
                                 'class' => '',

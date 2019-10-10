@@ -22,7 +22,7 @@ class m180328_063957_create_page_table extends Migration
             'id' => $this->primaryKey()->unsigned(),
             'route' => $this->string()->notNull(),
             'title' => $this->string(300)->notNull(),
-            'description' => $this->string(2048)->notNull(),
+            'description' => $this->text(),
             'content' => $this->text(),
             'timeCreated' => $this->dateTime(),
             'timeUpdated' => $this->dateTime(),
