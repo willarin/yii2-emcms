@@ -55,6 +55,6 @@ class Module extends \yii\base\Module
     
     public function getUploadPath()
     {
-        return $this->basePath . $this->uploadPath ? $this->uploadPath : '/uploads';
+        return \Yii::getAlias('@webroot') . ($this->uploadPath ? $this->uploadPath : '/uploads');
     }
 }

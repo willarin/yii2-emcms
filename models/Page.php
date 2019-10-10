@@ -254,7 +254,7 @@ class Page extends ActiveRecord
     public function getPublishedImage()
     {
         $result = '';
-        $imgPath = \Yii::$app->getModules()['emcms']->getUploadPath() . DIRECTORY_SEPARATOR . $this->image;
+        $imgPath = \Yii::$app->getModules()['emcms']->imagePath . DIRECTORY_SEPARATOR . $this->image;
         if (file_exists(\Yii::getAlias('@webroot') . $imgPath)) {
             $result = $imgPath;
         }
