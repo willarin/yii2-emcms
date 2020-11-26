@@ -28,9 +28,11 @@ class Bootstrap implements BootstrapInterface
     public function bootstrap($app)
     {
         if ($app->hasModule('emcms/user')) {
+    
             if ($app instanceof WebApplication) {
                 $app->setHomeUrl('/emcms');
             }
+    
             $components = $app->getComponents();
             if (isset($components['urlManager'])) {
                 if (in_array('page', Yii::$app->db->schema->tableNames)) {
@@ -63,9 +65,11 @@ class Bootstrap implements BootstrapInterface
                     $app->getUrlManager()->addRules($rulesToAdd, false);
                 }
             }
+    
             if (isset($components['view'])) {
                 $app->getView()->theme->pathMap['@dektrium/user/views'] = '@almeyda/emcms/views';
             }
+    
             if (!$app->hasModule('user')) {
                 $user_config = $app->getModule('emcms/user');
 

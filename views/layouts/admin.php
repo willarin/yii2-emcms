@@ -52,7 +52,7 @@ if (!Yii::$app->user->isGuest) {
         'items' => Yii::$app->user->isGuest ? [] :
             [
                 ['label' => Yii::t('app', 'Pages'), 'url' => ['/emcms']],
-                ['label' => Yii::t('app', 'Listings of pages'), 'url' => ['/emcms/listing']]
+                ['label' => Yii::t('app', 'Lists of pages'), 'url' => ['/emcms/listing']]
             ]
     ]);
     echo Nav::widget([

@@ -1,5 +1,6 @@
 ## Dynamic routes
-To use dynamic routes modify your application configuration to include:
+
+Dynamic routes modify your application configuration to include:
 
 ```php
 return [

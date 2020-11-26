@@ -15,7 +15,7 @@ use yii\bootstrap\NavBar;
 
 BootstrapAsset::register($this);
 
-$this->title = Yii::t('app', 'Page listings'); ?>
+$this->title = Yii::t('app', 'Lists of pages'); ?>
     <H1 class="text-center">Page listings</H1>
 <?= GridView::widget([
     'dataProvider' => $listDataProvider,
@@ -65,4 +65,4 @@ $this->title = Yii::t('app', 'Page listings'); ?>
         ],
     ],
 ]);
-echo Html::a(Yii::t('app', 'Add listing'), ['create'], ['class' => 'btn btn-primary']) ?>
+echo Html::a(Yii::t('app', 'Add list'), ['create'], ['class' => 'btn btn-primary']) ?>
